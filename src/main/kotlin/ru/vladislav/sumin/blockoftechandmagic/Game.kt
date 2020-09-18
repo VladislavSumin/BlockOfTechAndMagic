@@ -1,5 +1,6 @@
 package ru.vladislav.sumin.blockoftechandmagic
 
+import dagger.Provides
 import org.lwjgl.Version
 import org.lwjgl.glfw.Callbacks
 import org.lwjgl.glfw.GLFW.*
@@ -9,8 +10,12 @@ import org.lwjgl.opengl.GL11
 import org.lwjgl.system.MemoryStack
 import org.lwjgl.system.MemoryUtil.*
 import ru.vladislav.sumin.blockoftechandmagic.markers.MainThread
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class Game {
+
+@Singleton
+class Game @Inject constructor() {
     private var window: Long = 0
 
     @MainThread

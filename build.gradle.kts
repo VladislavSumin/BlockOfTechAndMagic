@@ -3,6 +3,7 @@ import org.gradle.internal.os.OperatingSystem
 plugins {
     java
     kotlin("jvm") version "1.4.10"
+    kotlin("kapt") version "1.4.10"
 }
 
 group = "ru.vladislavsumin"
@@ -10,6 +11,10 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+}
+
+tasks.withType<JavaCompile> {
+    options.annotationProcessorPath = configurations.annotationProcessor.get()
 }
 
 val lwjglVersion = "3.2.3"
@@ -24,6 +29,10 @@ val lwjglNatives = when (OperatingSystem.current()) {
 
 dependencies {
     implementation(kotlin("stdlib"))
+
+    //TODO add Configuration.kt
+    implementation("com.google.dagger:dagger:2.29.1")
+    kapt("com.google.dagger:dagger-compiler:2.29.1")
 
     implementation(platform("org.lwjgl:lwjgl-bom:$lwjglVersion"))
 
