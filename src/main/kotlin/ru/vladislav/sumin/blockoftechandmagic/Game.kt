@@ -11,13 +11,14 @@ import org.lwjgl.system.MemoryStack
 import org.lwjgl.system.MemoryUtil.*
 import ru.vladislav.sumin.blockoftechandmagic.markers.MainThread
 import ru.vladislav.sumin.blockoftechandmagic.userinput.UserInputKeyCallBack
+import ru.vladislav.sumin.blockoftechandmagic.utils.use
 import javax.inject.Inject
 import javax.inject.Singleton
 
 
 @Singleton
 class Game @Inject constructor(
-    userInputKeyCallBackLazy: Lazy<UserInputKeyCallBack>
+        userInputKeyCallBackLazy: Lazy<UserInputKeyCallBack>
 ) {
     companion object {
         private const val WIDTH = 800
@@ -66,8 +67,7 @@ class Game @Inject constructor(
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
         glfwSetKeyCallback(window, userInputKeyCallBack)
-
-        MemoryStack.stackPush().let { stack ->
+        MemoryStack.stackPush().use { stack ->
             val pWidth = stack.mallocInt(1) // int*
             val pHeight = stack.mallocInt(1) // int*
 
@@ -79,9 +79,9 @@ class Game @Inject constructor(
 
             // Center the window
             glfwSetWindowPos(
-                window,
-                (vidmode!!.width() - pWidth[0]) / 2,
-                (vidmode.height() - pHeight[0]) / 2
+                    window,
+                    (vidmode!!.width() - pWidth[0]) / 2,
+                    (vidmode.height() - pHeight[0]) / 2
             )
         }
 
@@ -109,12 +109,14 @@ class Game @Inject constructor(
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         while (!glfwWindowShouldClose(window)) {
-            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT or GL11.GL_DEPTH_BUFFER_BIT) // clear the framebuffer
-            glfwSwapBuffers(window) // swap the color buffers
-
             // Poll for window events. The key callback above will only be
             // invoked during this call.
             glfwPollEvents()
+
+            // Draw section
+            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT or GL11.GL_DEPTH_BUFFER_BIT) // clear the framebuffer
+
+            glfwSwapBuffers(window) // swap the color buffers
         }
     }
 
