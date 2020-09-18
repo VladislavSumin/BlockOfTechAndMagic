@@ -6,7 +6,7 @@ import org.lwjgl.glfw.Callbacks
 import org.lwjgl.glfw.GLFW.*
 import org.lwjgl.glfw.GLFWErrorCallback
 import org.lwjgl.opengl.GL
-import org.lwjgl.opengl.GL11
+import org.lwjgl.opengl.GL33.*
 import org.lwjgl.system.MemoryStack
 import org.lwjgl.system.MemoryUtil.*
 import ru.vladislav.sumin.blockoftechandmagic.markers.MainThread
@@ -36,6 +36,7 @@ class Game @Inject constructor(
         setupGlfwLogs()
         setupGlfw()
         setupGlfwWindow()
+        setupOpenGl()
         loop()
 
         // Free the window callbacks and destroy the window
@@ -52,12 +53,28 @@ class Game @Inject constructor(
         // Initialize GLFW.
         // Most GLFW functions will not work before doing this.
         check(glfwInit()) { "Unable to initialize GLFW" }
+
+        glfwDefaultWindowHints() // optional, the current window hints are already the default
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3)
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3)
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE)
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE)
+
+    }
+
+    private fun setupOpenGl() {
+        // This line is critical for LWJGL's interoperation with GLFW's
+        // OpenGL context, or any context that is managed externally.
+        // LWJGL detects the context that is current in the current thread,
+        // creates the GLCapabilities instance and makes the OpenGL
+        // bindings available for use.
+        GL.createCapabilities()
+        println("OpenGL version: ${glGetString(GL_VERSION)}")
     }
 
     @MainThread
     private fun setupGlfwWindow() {
         // Configure GLFW
-        glfwDefaultWindowHints() // optional, the current window hints are already the default
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE)
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE)
 
@@ -96,15 +113,8 @@ class Game @Inject constructor(
 
     @MainThread
     private fun loop() {
-        // This line is critical for LWJGL's interoperation with GLFW's
-        // OpenGL context, or any context that is managed externally.
-        // LWJGL detects the context that is current in the current thread,
-        // creates the GLCapabilities instance and makes the OpenGL
-        // bindings available for use.
-        GL.createCapabilities()
-
         // Set the clear color
-        GL11.glClearColor(1.0f, 0.0f, 0.0f, 0.0f)
+        glClearColor(1.0f, 0.0f, 0.0f, 0.0f)
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
@@ -114,7 +124,7 @@ class Game @Inject constructor(
             glfwPollEvents()
 
             // Draw section
-            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT or GL11.GL_DEPTH_BUFFER_BIT) // clear the framebuffer
+            glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT) // clear the framebuffer
 
             glfwSwapBuffers(window) // swap the color buffers
         }
