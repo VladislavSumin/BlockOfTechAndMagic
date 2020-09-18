@@ -2,33 +2,10 @@ package ru.vladislav.sumin.blockoftechandmagic
 
 import org.lwjgl.opengl.GL33.*
 import ru.vladislav.sumin.blockoftechandmagic.markers.MainThread
+import ru.vladislav.sumin.blockoftechandmagic.shader.ShaderLoader
 import java.lang.RuntimeException
 
 class TestTriangles {
-    companion object {
-        private val vertexShaderText = """
-            #version 330 core
-    
-            layout (location = 0) in vec3 position;
-    
-            void main()
-            {
-                gl_Position = vec4(position.x, position.y, position.z, 1.0);
-            }
-        """.trimIndent()
-
-        private val fragmentShaderText = """
-            #version 330 core
-
-            out vec4 color;
-
-            void main()
-            {
-            	color = vec4(0.0f, 1.0f, 0.0f, 1.0f);
-            }
-        """.trimIndent()
-    }
-
     private var vao = 0
     private var vbo = 0
     private var program = 0
@@ -69,8 +46,8 @@ class TestTriangles {
     }
 
     private fun createProgram(): Int {
-        val vertexShader = loadShader(GL_VERTEX_SHADER, vertexShaderText)
-        val fragmentShader = loadShader(GL_FRAGMENT_SHADER, fragmentShaderText)
+        val vertexShader = loadShader(GL_VERTEX_SHADER, ShaderLoader.loadShaderCode("vertexShader"))
+        val fragmentShader = loadShader(GL_FRAGMENT_SHADER, ShaderLoader.loadShaderCode("fragmentShader"))
 
         val shaderProgram = glCreateProgram()
         glAttachShader(shaderProgram, vertexShader)
