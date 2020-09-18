@@ -1,7 +1,6 @@
 package ru.vladislav.sumin.blockoftechandmagic
 
 import dagger.Lazy
-import dagger.Provides
 import org.lwjgl.Version
 import org.lwjgl.glfw.Callbacks
 import org.lwjgl.glfw.GLFW.*
@@ -20,6 +19,10 @@ import javax.inject.Singleton
 class Game @Inject constructor(
     userInputKeyCallBackLazy: Lazy<UserInputKeyCallBack>
 ) {
+    companion object {
+        private const val WIDTH = 800
+        private const val HEIGHT = 600
+    }
 
     private val userInputKeyCallBack by lazy { userInputKeyCallBackLazy.get() }
 
@@ -58,7 +61,7 @@ class Game @Inject constructor(
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE)
 
         // Create the window
-        window = glfwCreateWindow(300, 300, "Hello World!", NULL, NULL)
+        window = glfwCreateWindow(WIDTH, HEIGHT, "Block ot tech and magic", NULL, NULL)
         if (window == NULL) throw RuntimeException("Failed to create the GLFW window")
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
