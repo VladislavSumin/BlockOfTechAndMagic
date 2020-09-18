@@ -1,5 +1,6 @@
 package ru.vladislav.sumin.blockoftechandmagic
 
+import dagger.Lazy
 import dagger.Provides
 import org.lwjgl.Version
 import org.lwjgl.glfw.Callbacks
@@ -10,12 +11,18 @@ import org.lwjgl.opengl.GL11
 import org.lwjgl.system.MemoryStack
 import org.lwjgl.system.MemoryUtil.*
 import ru.vladislav.sumin.blockoftechandmagic.markers.MainThread
+import ru.vladislav.sumin.blockoftechandmagic.userinput.UserInputKeyCallBack
 import javax.inject.Inject
 import javax.inject.Singleton
 
 
 @Singleton
-class Game @Inject constructor() {
+class Game @Inject constructor(
+    userInputKeyCallBackLazy: Lazy<UserInputKeyCallBack>
+) {
+
+    private val userInputKeyCallBack by lazy { userInputKeyCallBackLazy.get() }
+
     private var window: Long = 0
 
     @MainThread
@@ -55,15 +62,7 @@ class Game @Inject constructor() {
         if (window == NULL) throw RuntimeException("Failed to create the GLFW window")
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
-        // TODO make UserInputManager
-        glfwSetKeyCallback(
-            window
-        ) { window: Long, key: Int, scancode: Int, action: Int, mods: Int ->
-            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) glfwSetWindowShouldClose(
-                window,
-                true
-            ) // We will detect this in the rendering loop
-        }
+        glfwSetKeyCallback(window, userInputKeyCallBack)
 
         MemoryStack.stackPush().let { stack ->
             val pWidth = stack.mallocInt(1) // int*
@@ -114,6 +113,11 @@ class Game @Inject constructor() {
             // invoked during this call.
             glfwPollEvents()
         }
+    }
+
+    @MainThread
+    fun setNeedClose() {
+        glfwSetWindowShouldClose(window, true)
     }
 
     @MainThread

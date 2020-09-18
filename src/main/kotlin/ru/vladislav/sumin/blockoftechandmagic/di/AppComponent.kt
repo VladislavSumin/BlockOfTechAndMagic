@@ -4,8 +4,8 @@ import dagger.Component
 import ru.vladislav.sumin.blockoftechandmagic.Starter
 import javax.inject.Singleton
 
-@Component
 @Singleton
+@Component(modules = [UserInputModule::class])
 interface AppComponent {
     fun inject(starter: Starter)
 }
