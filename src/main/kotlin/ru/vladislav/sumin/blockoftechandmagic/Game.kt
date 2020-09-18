@@ -5,6 +5,7 @@ import org.lwjgl.Version
 import org.lwjgl.glfw.Callbacks
 import org.lwjgl.glfw.GLFW.*
 import org.lwjgl.glfw.GLFWErrorCallback
+import org.lwjgl.glfw.GLFWWindowCloseCallbackI
 import org.lwjgl.opengl.GL
 import org.lwjgl.opengl.GL33.*
 import org.lwjgl.system.MemoryStack
@@ -70,6 +71,7 @@ class Game @Inject constructor(
         // bindings available for use.
         GL.createCapabilities()
         println("OpenGL version: ${glGetString(GL_VERSION)}")
+//        glViewport(0, 0, WIDTH, HEIGHT)
     }
 
     @MainThread
@@ -102,6 +104,11 @@ class Game @Inject constructor(
             )
         }
 
+        glfwSetWindowSizeCallback(window) { window: Long, width: Int, height: Int ->
+            println("Window shanged w=$width, h=$height")
+//            glViewport(0, 0, width*2, height*2)
+        }
+
         // Make the OpenGL context current
         glfwMakeContextCurrent(window)
         // Enable v-sync
@@ -113,19 +120,23 @@ class Game @Inject constructor(
 
     @MainThread
     private fun loop() {
+        //TODO add window resize callback
         // Set the clear color
-        glClearColor(1.0f, 0.0f, 0.0f, 0.0f)
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
+        val testTriangles = TestTriangles()
+        testTriangles.init()
+
         while (!glfwWindowShouldClose(window)) {
             // Poll for window events. The key callback above will only be
             // invoked during this call.
             glfwPollEvents()
 
             // Draw section
+            glClearColor(1.0f, 0.0f, 0.0f, 0.0f)
             glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT) // clear the framebuffer
-
+            testTriangles.draw()
             glfwSwapBuffers(window) // swap the color buffers
         }
     }
