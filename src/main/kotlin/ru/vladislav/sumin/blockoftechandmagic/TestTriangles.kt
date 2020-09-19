@@ -3,6 +3,7 @@ package ru.vladislav.sumin.blockoftechandmagic
 import org.lwjgl.opengl.GL33.*
 import ru.vladislav.sumin.blockoftechandmagic.markers.MainThread
 import ru.vladislav.sumin.blockoftechandmagic.shader.ShaderManager
+import ru.vladislav.sumin.blockoftechandmagic.shader.ShaderProgram
 import ru.vladislav.sumin.blockoftechandmagic.shader.ShaderType
 import java.lang.RuntimeException
 import javax.inject.Inject
@@ -13,7 +14,7 @@ class TestTriangles @Inject constructor(
         private val shaderManager: ShaderManager) {
     private var vao = 0
     private var vbo = 0
-    private var program = 0
+    private lateinit var program: ShaderProgram
 
     @MainThread
     fun init() {
@@ -42,7 +43,7 @@ class TestTriangles @Inject constructor(
     }
 
     fun draw() {
-        glUseProgram(program)
+        glUseProgram(program.programId)
         glBindVertexArray(vao)
         glEnableVertexAttribArray(0)
         glBindBuffer(GL_ARRAY_BUFFER, vbo)
@@ -50,20 +51,11 @@ class TestTriangles @Inject constructor(
         glBindVertexArray(0)
     }
 
-    private fun createProgram(): Int {
+    private fun createProgram(): ShaderProgram {
         val vertexShader = shaderManager.loadShader("vertexShader", ShaderType.VERTEX)
         val fragmentShader = shaderManager.loadShader("fragmentShader", ShaderType.FRAGMENT)
 
-        val shaderProgram = glCreateProgram()
-        glAttachShader(shaderProgram, vertexShader.shaderId)
-        glAttachShader(shaderProgram, fragmentShader.shaderId)
-        glLinkProgram(shaderProgram)
-
-        val status = glGetProgrami(shaderProgram, GL_LINK_STATUS)
-        if (status != 1) {
-            println(glGetProgramInfoLog(shaderProgram))
-            throw RuntimeException("Shader compile failed status: $status")
-        }
+        val shaderProgram = shaderManager.createShaderProgram(vertexShader, fragmentShader)
 
         vertexShader.close()
         fragmentShader.close()
