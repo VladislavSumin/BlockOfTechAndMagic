@@ -2,7 +2,6 @@ package ru.vladislav.sumin.blockoftechandmagic.shader
 
 import ru.vladislav.sumin.blockoftechandmagic.markers.MainThread
 import ru.vladislav.sumin.blockoftechandmagic.render.OpenGL
-import ru.vladislav.sumin.blockoftechandmagic.shader.exceptions.ShaderAlreadyClosedException
 import java.io.Closeable
 
 class Shader(

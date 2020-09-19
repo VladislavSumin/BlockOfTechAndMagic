@@ -4,8 +4,6 @@ import ru.vladislav.sumin.blockoftechandmagic.markers.IoThread
 import ru.vladislav.sumin.blockoftechandmagic.markers.MainThread
 import ru.vladislav.sumin.blockoftechandmagic.render.OpenGL
 import ru.vladislav.sumin.blockoftechandmagic.resource.ResourceManager
-import ru.vladislav.sumin.blockoftechandmagic.shader.exceptions.CreateShaderProgramException
-import ru.vladislav.sumin.blockoftechandmagic.shader.exceptions.ShaderCompileException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -46,7 +44,7 @@ class ShaderManagerImpl @Inject constructor(
         if (status == 0) {
             gl.glDeleteProgram(program)
             val message = gl.glGetProgramInfoLog(program)
-            throw CreateShaderProgramException("Program compile status failed. Shaders: $shader, error: $message")
+            throw ShaderProgramCreateException("Program compile status failed. Shaders: $shader, error: $message")
         }
         return ShaderProgram(gl, program)
     }
