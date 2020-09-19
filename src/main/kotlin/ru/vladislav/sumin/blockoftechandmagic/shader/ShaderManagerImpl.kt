@@ -3,14 +3,15 @@ package ru.vladislav.sumin.blockoftechandmagic.shader
 import ru.vladislav.sumin.blockoftechandmagic.markers.IoThread
 import ru.vladislav.sumin.blockoftechandmagic.markers.MainThread
 import ru.vladislav.sumin.blockoftechandmagic.render.OpenGL
+import ru.vladislav.sumin.blockoftechandmagic.resource.ResourceManager
 import ru.vladislav.sumin.blockoftechandmagic.shader.exceptions.ShaderCompileException
-import java.io.InputStream
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class ShaderManagerImpl @Inject constructor(
-        private val gl: OpenGL
+        private val gl: OpenGL,
+        private val resourceManager: ResourceManager
 ) : ShaderManager {
     override fun loadShader(name: String, type: ShaderType): Shader {
         val shaderCode = loadShaderString(name, type)
@@ -34,7 +35,7 @@ class ShaderManagerImpl @Inject constructor(
 
     @IoThread
     private fun loadShaderString(name: String, type: ShaderType): String {
-        return getResource(getShaderPath(name, type)).reader()
+        return resourceManager.getResourceAsStream(getShaderPath(name, type)).reader()
                 .use {
                     it.readText()
                 }
@@ -42,12 +43,5 @@ class ShaderManagerImpl @Inject constructor(
 
     private fun getShaderPath(name: String, type: ShaderType): String {
         return "shaders/$name${type.extension}"
-    }
-
-    @IoThread
-    private fun getResource(path: String): InputStream {
-        //TODO make resourceManager
-        return javaClass.classLoader
-                .getResourceAsStream(path)!!
     }
 }
