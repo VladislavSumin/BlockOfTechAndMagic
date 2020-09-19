@@ -1,13 +1,20 @@
 package ru.vladislav.sumin.blockoftechandmagic.render;
 
+import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 
 public class OpenGL {
-    public static final int GL_VERTEX_SHADER = GL20.GL_VERTEX_SHADER;
-    public static final int GL_FRAGMENT_SHADER = GL20.GL_FRAGMENT_SHADER;
+    public static final int
+            GL_VERTEX_SHADER = GL20.GL_VERTEX_SHADER,
+            GL_FRAGMENT_SHADER = GL20.GL_FRAGMENT_SHADER;
 
-    public static final int GL_COMPILE_STATUS = GL20.GL_COMPILE_STATUS;
-    public static final int GL_LINK_STATUS = GL20.GL_LINK_STATUS;
+    public static final int
+            GL_COMPILE_STATUS = GL20.GL_COMPILE_STATUS,
+            GL_LINK_STATUS = GL20.GL_LINK_STATUS;
+
+    public static final int
+            GL_ARRAY_BUFFER = GL15.GL_ARRAY_BUFFER,
+            GL_ELEMENT_ARRAY_BUFFER = GL15.GL_ELEMENT_ARRAY_BUFFER;
 
     public static int glCreateShader(int type) {
         return GL20.glCreateShader(type);
@@ -55,5 +62,25 @@ public class OpenGL {
 
     public static void glDeleteProgram(int program) {
         GL20.glDeleteProgram(program);
+    }
+
+    public static int glGenBuffers() {
+        return GL15.glGenBuffers();
+    }
+
+    public static void glDeleteBuffers(int buffer) {
+        GL15.glDeleteBuffers(buffer);
+    }
+
+    public static void glBindBuffer(int target, int buffer) {
+        GL15.glBindBuffer(target, buffer);
+    }
+
+    public static void glBufferData(int target, int[] data, int usage) {
+        GL15.glBufferData(target, data, usage);
+    }
+
+    public static void glBufferData(int target, float[] data, int usage) {
+        GL15.glBufferData(target, data, usage);
     }
 }
