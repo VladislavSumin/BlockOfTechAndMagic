@@ -2,51 +2,50 @@ package ru.vladislav.sumin.blockoftechandmagic.shader
 
 import ru.vladislav.sumin.blockoftechandmagic.markers.IoThread
 import ru.vladislav.sumin.blockoftechandmagic.markers.MainThread
-import ru.vladislav.sumin.blockoftechandmagic.render.OpenGL
+import ru.vladislav.sumin.blockoftechandmagic.render.OpenGL.*
 import ru.vladislav.sumin.blockoftechandmagic.resource.ResourceManager
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class ShaderManagerImpl @Inject constructor(
-        private val gl: OpenGL,
         private val resourceManager: ResourceManager
 ) : ShaderManager {
     override fun loadShader(name: String, type: ShaderType): Shader {
         val shaderCode = loadShaderString(name, type)
         val shaderId = compileShader(name, type, shaderCode)
-        return Shader(gl, shaderId, type)
+        return Shader(shaderId, type)
     }
 
     @MainThread
     private fun compileShader(name: String, type: ShaderType, shaderCode: String): Int {
-        val shader = gl.glCreateShader(type.shaderGlType)
-        gl.glShaderSource(shader, shaderCode)
-        gl.glCompileShader(shader)
+        val shader = glCreateShader(type.shaderGlType)
+        glShaderSource(shader, shaderCode)
+        glCompileShader(shader)
 
-        val status = gl.glGetShaderi(shader, OpenGL.GL_COMPILE_STATUS)
+        val status = glGetShaderi(shader, GL_COMPILE_STATUS)
         if (status == 0) {
-            gl.glDeleteShader(shader)
-            val message = gl.glGetShaderInfoLog(shader)
+            glDeleteShader(shader)
+            val message = glGetShaderInfoLog(shader)
             throw ShaderCompileException("Shader compile failed. Shader name: $name, type: $type, error: $message")
         }
         return shader
     }
 
     override fun createShaderProgram(vararg shader: Shader): ShaderProgram {
-        val program = gl.glCreateProgram()
+        val program = glCreateProgram()
         shader.forEach {
-            gl.glAttachShader(program, it.shaderId)
+            glAttachShader(program, it.shaderId)
         }
-        gl.glLinkProgram(program)
+        glLinkProgram(program)
 
-        val status = gl.glGetProgrami(program, OpenGL.GL_LINK_STATUS)
+        val status = glGetProgrami(program, GL_LINK_STATUS)
         if (status == 0) {
-            gl.glDeleteProgram(program)
-            val message = gl.glGetProgramInfoLog(program)
+            glDeleteProgram(program)
+            val message = glGetProgramInfoLog(program)
             throw ShaderProgramCreateException("Program compile status failed. Shaders: $shader, error: $message")
         }
-        return ShaderProgram(gl, program)
+        return ShaderProgram(program)
     }
 
     @IoThread
