@@ -19,7 +19,8 @@ import javax.inject.Singleton
 
 @Singleton
 class Game @Inject constructor(
-        userInputKeyCallBackLazy: Lazy<UserInputKeyCallBack>
+        userInputKeyCallBackLazy: Lazy<UserInputKeyCallBack>,
+        private val triangles: TestTriangles
 ) {
     companion object {
         private const val WIDTH = 800
@@ -125,8 +126,7 @@ class Game @Inject constructor(
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
-        val testTriangles = TestTriangles()
-        testTriangles.init()
+        triangles.init()
 
         while (!glfwWindowShouldClose(window)) {
             // Poll for window events. The key callback above will only be
@@ -136,7 +136,7 @@ class Game @Inject constructor(
             // Draw section
             glClearColor(1.0f, 0.0f, 0.0f, 0.0f)
             glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT) // clear the framebuffer
-            testTriangles.draw()
+            triangles.draw()
             glfwSwapBuffers(window) // swap the color buffers
         }
     }

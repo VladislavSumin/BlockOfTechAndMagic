@@ -5,7 +5,10 @@ import ru.vladislav.sumin.blockoftechandmagic.Starter
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [UserInputModule::class])
+@Component(modules = [
+    UserInputModule::class,
+    ShaderModule::class
+])
 interface AppComponent {
     fun inject(starter: Starter)
 }
