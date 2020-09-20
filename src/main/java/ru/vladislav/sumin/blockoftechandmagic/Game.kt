@@ -134,7 +134,7 @@ class Game @Inject constructor(
             glfwPollEvents()
 
             // Draw section
-            glClearColor(1.0f, 0.0f, 0.0f, 0.0f)
+            glClearColor(0.2f, 0.3f, 0.3f, 1.0f)
             glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT) // clear the framebuffer
             triangles.draw()
             glfwSwapBuffers(window) // swap the color buffers

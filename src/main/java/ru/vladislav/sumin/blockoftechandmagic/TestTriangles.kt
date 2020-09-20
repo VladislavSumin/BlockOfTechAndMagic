@@ -25,7 +25,7 @@ class TestTriangles @Inject constructor(
     fun init() {
         program = createProgram()
 
-        val triangle = floatArrayOf(
+        val quad = floatArrayOf(
             0.5f, 0.5f, 0.0f,  // Верхний правый угол
             0.5f, -0.5f, 0.0f,  // Нижний правый угол
             -0.5f, -0.5f, 0.0f,  // Нижний левый угол
@@ -37,25 +37,33 @@ class TestTriangles @Inject constructor(
             1, 2, 3    // Второй треугольник
         )
 
+        val triangle = floatArrayOf(
+            // Позиции         // Цвета
+            0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,   // Нижний правый угол
+            -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,   // Нижний левый угол
+            0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f    // Верхний угол
+        )
+
         val vbo = VBO()
-        val ebo = EBO()
+//        val ebo = EBO()
         vbo.setData(triangle)
-        ebo.setData(indices)
+//        ebo.setData(indices)
 
-        val attr1 = VertexAttribute(3, OpenGL.GL_FLOAT, false, 3 * 4, 0)
+        val attr1 = VertexAttribute(3, OpenGL.GL_FLOAT, false, 6 * 4, 0)
+        val attr2 = VertexAttribute(3, OpenGL.GL_FLOAT, false, 6 * 4, 3 * 4)
 
-        vao = VAO(vbo, ebo, listOf(attr1))
+        vao = VAO(vbo, null, listOf(attr1, attr2))
 
     }
 
     fun draw() {
         program.useProgram()
-        glUniform4f(0, 0.0f, (sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat(), 0.0f, 1.0f);
+//        glUniform4f(0, 0.0f, (sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat(), 0.0f, 1.0f);
         vao.draw()
     }
 
     private fun createProgram(): ShaderProgram {
-        val vertexShader = shaderManager.loadShader("vertexShader", ShaderType.VERTEX)
+        val vertexShader = shaderManager.loadShader("vertexShader2", ShaderType.VERTEX)
         val fragmentShader = shaderManager.loadShader("variableColorShader", ShaderType.FRAGMENT)
 
         val shaderProgram = shaderManager.createShaderProgram(vertexShader, fragmentShader)
