@@ -1,10 +1,9 @@
 package ru.vladislav.sumin.blockoftechandmagic
 
-import org.lwjgl.BufferUtils
-import org.lwjgl.opengl.GL15
 import org.lwjgl.opengl.GL33.*
 import ru.vladislav.sumin.blockoftechandmagic.markers.MainThread
 import ru.vladislav.sumin.blockoftechandmagic.render.buffer.EBO
+import ru.vladislav.sumin.blockoftechandmagic.render.buffer.VAO
 import ru.vladislav.sumin.blockoftechandmagic.render.buffer.VBO
 import ru.vladislav.sumin.blockoftechandmagic.shader.ShaderManager
 import ru.vladislav.sumin.blockoftechandmagic.shader.ShaderProgram
@@ -15,7 +14,7 @@ import javax.inject.Singleton
 @Singleton
 class TestTriangles @Inject constructor(
         private val shaderManager: ShaderManager) {
-    private var vao = 0
+    private lateinit var vao: VAO
     private lateinit var ebo: EBO
     private lateinit var vbo: VBO
     private lateinit var program: ShaderProgram
@@ -36,27 +35,18 @@ class TestTriangles @Inject constructor(
                 1, 2, 3    // Второй треугольник
         )
 
-        vao = glGenVertexArrays()
         vbo = VBO()
         ebo = EBO()
+        vbo.setData(triangle)
+        ebo.setData(indices)
 
-        glBindVertexArray(vao)
-
-        vbo.setData(triangle, GL_STATIC_DRAW)
-        ebo.setData(indices, GL_STATIC_DRAW)
-
-        glVertexAttribPointer(0, 3, GL_FLOAT, false, 3 * 4, 0)
-        glEnableVertexAttribArray(0)
-
-        glBindVertexArray(0)
+        vao = VAO(vbo, ebo)
 
     }
 
     fun draw() {
-        glUseProgram(program.programId)
-        glBindVertexArray(vao)
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0)
-        glBindVertexArray(0)
+        program.useProgram()
+        vao.draw()
     }
 
     private fun createProgram(): ShaderProgram {

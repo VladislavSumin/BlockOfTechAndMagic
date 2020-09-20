@@ -1,9 +1,45 @@
 package ru.vladislav.sumin.blockoftechandmagic.render;
 
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.*;
 
 public class OpenGL {
+
+    public static final int
+            GL_BYTE = GL11.GL_BYTE,
+            GL_UNSIGNED_BYTE = GL11.GL_UNSIGNED_BYTE,
+            GL_SHORT = GL11.GL_SHORT,
+            GL_UNSIGNED_SHORT = GL11.GL_UNSIGNED_SHORT,
+            GL_INT = GL11.GL_INT,
+            GL_UNSIGNED_INT = GL11.GL_UNSIGNED_INT,
+            GL_FLOAT = GL11.GL_FLOAT,
+            GL_2_BYTES = GL11.GL_2_BYTES,
+            GL_3_BYTES = GL11.GL_3_BYTES,
+            GL_4_BYTES = GL11.GL_4_BYTES,
+            GL_DOUBLE = GL11.GL_DOUBLE;
+
+    public static final int
+            GL_STREAM_DRAW = GL15.GL_STREAM_DRAW,
+            GL_STREAM_READ = GL15.GL_STREAM_READ,
+            GL_STREAM_COPY = GL15.GL_STREAM_COPY,
+            GL_STATIC_DRAW = GL15.GL_STATIC_DRAW,
+            GL_STATIC_READ = GL15.GL_STATIC_READ,
+            GL_STATIC_COPY = GL15.GL_STATIC_COPY,
+            GL_DYNAMIC_DRAW = GL15.GL_DYNAMIC_DRAW,
+            GL_DYNAMIC_READ = GL15.GL_DYNAMIC_READ,
+            GL_DYNAMIC_COPY = GL15.GL_DYNAMIC_COPY;
+
+    public static final int
+            GL_POINTS = GL11.GL_POINTS,
+            GL_LINES = GL11.GL_LINES,
+            GL_LINE_LOOP = GL11.GL_LINE_LOOP,
+            GL_LINE_STRIP = GL11.GL_LINE_STRIP,
+            GL_TRIANGLES = GL11.GL_TRIANGLES,
+            GL_TRIANGLE_STRIP = GL11.GL_TRIANGLE_STRIP,
+            GL_TRIANGLE_FAN = GL11.GL_TRIANGLE_FAN,
+            GL_QUADS = GL11.GL_QUADS,
+            GL_QUAD_STRIP = GL11.GL_QUAD_STRIP,
+            GL_POLYGON = GL11.GL_POLYGON;
+
     public static final int
             GL_VERTEX_SHADER = GL20.GL_VERTEX_SHADER,
             GL_FRAGMENT_SHADER = GL20.GL_FRAGMENT_SHADER;
@@ -82,5 +118,37 @@ public class OpenGL {
 
     public static void glBufferData(int target, float[] data, int usage) {
         GL15.glBufferData(target, data, usage);
+    }
+
+    public static int glGenVertexArrays() {
+        return GL30.glGenVertexArrays();
+    }
+
+    public static void glDeleteVertexArrays(int array) {
+        GL30.glDeleteVertexArrays(array);
+    }
+
+    public static void glBindVertexArray(int array) {
+        GL30.glBindVertexArray(array);
+    }
+
+    public static void glVertexAttribPointer(int index, int size, int type, boolean normalized, int stride, long pointer) {
+        GL20.glVertexAttribPointer(index, size, type, normalized, stride, pointer);
+    }
+
+    public static void glEnableVertexAttribArray(int index) {
+        GL20.glEnableVertexAttribArray(index);
+    }
+
+    public static void glDrawElements(int mode, int count, int type, long indices) {
+        GL11.glDrawElements(mode, count, type, indices);
+    }
+
+    public static void glDrawArrays(int mode, int first, int count) {
+        GL11.glDrawArrays(mode, first, count);
+    }
+
+    public static void glUseProgram(int program) {
+        GL20.glUseProgram(program);
     }
 }
