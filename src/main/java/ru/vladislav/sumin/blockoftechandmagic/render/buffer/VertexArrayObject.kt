@@ -7,9 +7,10 @@ import java.io.Closeable
 import java.lang.Exception
 
 class VertexArrayObject(
-        val vbo: VBO,
-        val ebo: EBO? = null,
-        private val isCloseChildResources: Boolean = true
+    val vbo: VBO,
+    val ebo: EBO? = null,
+    val attributes: List<VertexAttribute>,
+    private val isCloseChildResources: Boolean = true
 ) : Closeable {
     val id = glGenVertexArrays()
 
@@ -19,8 +20,10 @@ class VertexArrayObject(
         vbo.bind()
         ebo?.bind()
 
-        glVertexAttribPointer(0, 3, GL_FLOAT, false, 3 * 4, 0)
-        glEnableVertexAttribArray(0)
+        attributes.forEachIndexed { index, attribute ->
+            attribute.setAttribute(index)
+            glEnableVertexAttribArray(index)
+        }
 
         glBindVertexArray(0)
     }

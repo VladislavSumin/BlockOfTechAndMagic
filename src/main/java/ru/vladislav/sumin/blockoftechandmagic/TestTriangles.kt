@@ -2,9 +2,11 @@ package ru.vladislav.sumin.blockoftechandmagic
 
 import org.lwjgl.opengl.GL33.*
 import ru.vladislav.sumin.blockoftechandmagic.markers.MainThread
+import ru.vladislav.sumin.blockoftechandmagic.render.OpenGL
 import ru.vladislav.sumin.blockoftechandmagic.render.buffer.EBO
 import ru.vladislav.sumin.blockoftechandmagic.render.buffer.VAO
 import ru.vladislav.sumin.blockoftechandmagic.render.buffer.VBO
+import ru.vladislav.sumin.blockoftechandmagic.render.buffer.VertexAttribute
 import ru.vladislav.sumin.blockoftechandmagic.shader.ShaderManager
 import ru.vladislav.sumin.blockoftechandmagic.shader.ShaderProgram
 import ru.vladislav.sumin.blockoftechandmagic.shader.ShaderType
@@ -17,8 +19,6 @@ class TestTriangles @Inject constructor(
     private val shaderManager: ShaderManager
 ) {
     private lateinit var vao: VAO
-    private lateinit var ebo: EBO
-    private lateinit var vbo: VBO
     private lateinit var program: ShaderProgram
 
     @MainThread
@@ -37,18 +37,20 @@ class TestTriangles @Inject constructor(
             1, 2, 3    // Второй треугольник
         )
 
-        vbo = VBO()
-        ebo = EBO()
+        val vbo = VBO()
+        val ebo = EBO()
         vbo.setData(triangle)
         ebo.setData(indices)
 
-        vao = VAO(vbo, ebo)
+        val attr1 = VertexAttribute(3, OpenGL.GL_FLOAT, false, 3 * 4, 0)
+
+        vao = VAO(vbo, ebo, listOf(attr1))
 
     }
 
     fun draw() {
         program.useProgram()
-        glUniform4f(0, 0.0f, (sin(System.currentTimeMillis().toDouble()/400) / 2 + 0.5).toFloat(), 0.0f, 1.0f);
+        glUniform4f(0, 0.0f, (sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat(), 0.0f, 1.0f);
         vao.draw()
     }
 
