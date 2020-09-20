@@ -1,6 +1,9 @@
 package ru.vladislav.sumin.blockoftechandmagic.render;
 
 import org.lwjgl.opengl.*;
+import org.lwjgl.system.NativeType;
+
+import java.nio.IntBuffer;
 
 public class OpenGL {
 
@@ -45,12 +48,22 @@ public class OpenGL {
             GL_FRAGMENT_SHADER = GL20.GL_FRAGMENT_SHADER;
 
     public static final int
-            GL_COMPILE_STATUS = GL20.GL_COMPILE_STATUS,
-            GL_LINK_STATUS = GL20.GL_LINK_STATUS;
-
-    public static final int
             GL_ARRAY_BUFFER = GL15.GL_ARRAY_BUFFER,
             GL_ELEMENT_ARRAY_BUFFER = GL15.GL_ELEMENT_ARRAY_BUFFER;
+
+    public static final int
+            GL_SHADER_TYPE = GL20.GL_SHADER_TYPE,
+            GL_DELETE_STATUS = GL20.GL_DELETE_STATUS,
+            GL_COMPILE_STATUS = GL20.GL_COMPILE_STATUS,
+            GL_LINK_STATUS = GL20.GL_LINK_STATUS,
+            GL_VALIDATE_STATUS = GL20.GL_VALIDATE_STATUS,
+            GL_INFO_LOG_LENGTH = GL20.GL_INFO_LOG_LENGTH,
+            GL_ATTACHED_SHADERS = GL20.GL_ATTACHED_SHADERS,
+            GL_ACTIVE_UNIFORMS = GL20.GL_ACTIVE_UNIFORMS,
+            GL_ACTIVE_UNIFORM_MAX_LENGTH = GL20.GL_ACTIVE_UNIFORM_MAX_LENGTH,
+            GL_ACTIVE_ATTRIBUTES = GL20.GL_ACTIVE_ATTRIBUTES,
+            GL_ACTIVE_ATTRIBUTE_MAX_LENGTH = GL20.GL_ACTIVE_ATTRIBUTE_MAX_LENGTH,
+            GL_SHADER_SOURCE_LENGTH = GL20.GL_SHADER_SOURCE_LENGTH;
 
     public static int glCreateShader(int type) {
         return GL20.glCreateShader(type);
@@ -150,5 +163,9 @@ public class OpenGL {
 
     public static void glUseProgram(int program) {
         GL20.glUseProgram(program);
+    }
+
+    public static String glGetActiveUniform(int program, int index, IntBuffer size, IntBuffer type) {
+        return GL20.glGetActiveUniform(program, index, size, type);
     }
 }

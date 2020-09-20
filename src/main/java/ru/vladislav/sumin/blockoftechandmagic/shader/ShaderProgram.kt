@@ -1,15 +1,31 @@
 package ru.vladislav.sumin.blockoftechandmagic.shader
 
+import org.lwjgl.system.MemoryStack
 import ru.vladislav.sumin.blockoftechandmagic.markers.MainThread
-import ru.vladislav.sumin.blockoftechandmagic.render.OpenGL.glDeleteProgram
-import ru.vladislav.sumin.blockoftechandmagic.render.OpenGL.glUseProgram
+import ru.vladislav.sumin.blockoftechandmagic.render.OpenGL.*
+import ru.vladislav.sumin.blockoftechandmagic.utils.use
 import java.io.Closeable
 
 class ShaderProgram(
-        val id: Int
+    val id: Int
 ) : Closeable {
     var isClosed = false
         private set
+
+    @MainThread
+    private val uniforms: Array<Uniform> by lazy(LazyThreadSafetyMode.NONE) {
+        val uniformCount = glGetProgrami(id, GL_ACTIVE_UNIFORMS)
+        Array(uniformCount) { index ->
+            MemoryStack.stackPush().use {
+                val size = it.mallocInt(1)
+                val type = it.mallocInt(1)
+                val name = glGetActiveUniform(id, index, size, type)
+                Uniform(index, name, size[0], type[0])
+            }
+        }
+    }
+
+    //TODO add function glUniform4f
 
     fun useProgram() {
         glUseProgram(id)
@@ -21,4 +37,6 @@ class ShaderProgram(
         isClosed = true
         glDeleteProgram(id)
     }
+
+    data class Uniform(val id: Int, val name: String, val size: Int, val type: Int)
 }
