@@ -3,10 +3,7 @@ package ru.vladislav.sumin.blockoftechandmagic
 import org.lwjgl.opengl.GL33.*
 import ru.vladislav.sumin.blockoftechandmagic.markers.MainThread
 import ru.vladislav.sumin.blockoftechandmagic.render.OpenGL
-import ru.vladislav.sumin.blockoftechandmagic.render.buffer.EBO
-import ru.vladislav.sumin.blockoftechandmagic.render.buffer.VAO
-import ru.vladislav.sumin.blockoftechandmagic.render.buffer.VBO
-import ru.vladislav.sumin.blockoftechandmagic.render.buffer.VertexAttribute
+import ru.vladislav.sumin.blockoftechandmagic.render.buffer.*
 import ru.vladislav.sumin.blockoftechandmagic.shader.ShaderManager
 import ru.vladislav.sumin.blockoftechandmagic.shader.ShaderProgram
 import ru.vladislav.sumin.blockoftechandmagic.shader.ShaderType
@@ -49,10 +46,10 @@ class TestTriangles @Inject constructor(
         vbo.setData(triangle)
 //        ebo.setData(indices)
 
-        val attr1 = VertexAttribute(3, OpenGL.GL_FLOAT, false, 6 * 4, 0)
-        val attr2 = VertexAttribute(3, OpenGL.GL_FLOAT, false, 6 * 4, 3 * 4)
-
-        vao = VAO(vbo, null, listOf(attr1, attr2))
+        val attr1 = VertexAttribute(3, VertexAttribute.Type.FLOAT, false)
+        val attr2 = VertexAttribute(3, VertexAttribute.Type.FLOAT, false)
+        val attrs = VertexAttributeArray(attr1, attr2)
+        vao = VAO(vbo, null, attrs)
 
     }
 

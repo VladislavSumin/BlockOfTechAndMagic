@@ -9,7 +9,7 @@ import java.lang.Exception
 class VertexArrayObject(
     val vbo: VBO,
     val ebo: EBO? = null,
-    val attributes: List<VertexAttribute>,
+    val attributes: VertexAttributeArray,
     private val isCloseChildResources: Boolean = true
 ) : Closeable {
     val id = glGenVertexArrays()
@@ -20,10 +20,7 @@ class VertexArrayObject(
         vbo.bind()
         ebo?.bind()
 
-        attributes.forEachIndexed { index, attribute ->
-            attribute.setAttribute(index)
-            glEnableVertexAttribArray(index)
-        }
+        attributes.setAttributes()
 
         glBindVertexArray(0)
     }

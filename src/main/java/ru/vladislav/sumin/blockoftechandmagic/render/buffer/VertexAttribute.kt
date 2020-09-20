@@ -4,12 +4,13 @@ import ru.vladislav.sumin.blockoftechandmagic.render.OpenGL
 
 class VertexAttribute(
     val size: Int,
-    val type: Int,
+    val type: Type,
     val normalized: Boolean,
-    val stride: Int,
-    val offset: Long
 ) {
-    fun setAttribute(index: Int) {
-        OpenGL.glVertexAttribPointer(index, size, type, normalized, stride, offset)
+    enum class Type(
+        val glId: Int,
+        val size: Int
+    ) {
+        FLOAT(OpenGL.GL_FLOAT, 4)
     }
 }
