@@ -1,7 +1,6 @@
-package ru.vladislav.sumin.blockoftechandmagic.shader
+package ru.vladislav.sumin.blockoftechandmagic.client.shader
 
 import ru.vladislavsumin.opengl.markers.IoThread
-import ru.vladislavsumin.opengl.OpenGL.*
 import ru.vladislav.sumin.blockoftechandmagic.resource.ResourceManager
 import ru.vladislavsumin.opengl.shader.*
 import javax.inject.Inject

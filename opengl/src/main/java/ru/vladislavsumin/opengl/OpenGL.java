@@ -1,6 +1,7 @@
 package ru.vladislavsumin.opengl;
 
 import org.lwjgl.opengl.*;
+import org.lwjgl.system.NativeType;
 
 import java.nio.IntBuffer;
 
@@ -63,6 +64,22 @@ public class OpenGL {
             GL_ACTIVE_ATTRIBUTES = GL20.GL_ACTIVE_ATTRIBUTES,
             GL_ACTIVE_ATTRIBUTE_MAX_LENGTH = GL20.GL_ACTIVE_ATTRIBUTE_MAX_LENGTH,
             GL_SHADER_SOURCE_LENGTH = GL20.GL_SHADER_SOURCE_LENGTH;
+
+    public static final int
+            GL_COLOR_INDEX     = GL11.GL_COLOR_INDEX,
+            GL_STENCIL_INDEX   = GL11.GL_STENCIL_INDEX,
+            GL_DEPTH_COMPONENT = GL11.GL_DEPTH_COMPONENT,
+            GL_RED             = GL11.GL_RED,
+            GL_GREEN           = GL11.GL_GREEN,
+            GL_BLUE            = GL11.GL_BLUE,
+            GL_ALPHA           = GL11.GL_ALPHA,
+            GL_RGB             = GL11.GL_RGB,
+            GL_RGBA            = GL11.GL_RGBA,
+            GL_LUMINANCE       = GL11.GL_LUMINANCE,
+            GL_LUMINANCE_ALPHA = GL11.GL_LUMINANCE_ALPHA;
+
+    public static final int GL_TEXTURE_2D = GL11.GL_TEXTURE_2D;
+
 
     public static int glCreateShader(int type) {
         return GL20.glCreateShader(type);
@@ -170,5 +187,13 @@ public class OpenGL {
 
     public static int glGenTextures() {
         return GL11.glGenTextures();
+    }
+
+    public static void glBindTexture(int target, int texture) {
+        GL11.glBindTexture(target, texture);
+    }
+
+    public static void glDeleteTextures(int texture) {
+        GL11.glDeleteTextures(texture);
     }
 }

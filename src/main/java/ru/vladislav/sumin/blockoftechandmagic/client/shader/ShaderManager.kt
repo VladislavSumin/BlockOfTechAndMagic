@@ -1,4 +1,4 @@
-package ru.vladislav.sumin.blockoftechandmagic.shader
+package ru.vladislav.sumin.blockoftechandmagic.client.shader
 
 import ru.vladislavsumin.opengl.markers.MainThread
 import ru.vladislavsumin.opengl.markers.MainThreadBlocking
