@@ -1,18 +1,16 @@
 package ru.vladislavsumin.opengl.shader
 
 import ru.vladislavsumin.opengl.OpenGL.*
+import ru.vladislavsumin.opengl.OpenGlResource
 import ru.vladislavsumin.opengl.markers.MainThread
 import java.io.Closeable
 
 class Shader(
     shaderCode: String,
     val shaderType: ShaderType
-) : Closeable {
-    val id: Int = glCreateShader(shaderType.shaderGlType)
-
+) : OpenGlResource(glCreateShader(shaderType.shaderGlType)) {
     var isClosed = false
         private set
-
 
     init {
         glShaderSource(id, shaderCode)

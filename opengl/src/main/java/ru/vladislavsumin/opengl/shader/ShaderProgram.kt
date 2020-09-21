@@ -3,14 +3,13 @@ package ru.vladislavsumin.opengl.shader
 import org.lwjgl.system.MemoryStack
 import ru.vladislavsumin.opengl.markers.MainThread
 import ru.vladislavsumin.opengl.OpenGL.*
+import ru.vladislavsumin.opengl.OpenGlResource
 import ru.vladislavsumin.opengl.utils.use
-import java.io.Closeable
 
 class ShaderProgram(
     vararg shaders: Shader,
     val isCloseChildAfterCompile: Boolean = false
-) : Closeable {
-    val id: Int = glCreateProgram()
+) : OpenGlResource(glCreateProgram()) {
     var isClosed = false
         private set
 

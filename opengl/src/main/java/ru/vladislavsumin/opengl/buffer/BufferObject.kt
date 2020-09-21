@@ -1,12 +1,11 @@
 package ru.vladislavsumin.opengl.buffer
 
 import ru.vladislavsumin.opengl.OpenGL.*
+import ru.vladislavsumin.opengl.OpenGlResource
 import ru.vladislavsumin.opengl.markers.MainThread
-import java.io.Closeable
 import java.lang.Exception
 
-abstract class BufferObject : Closeable {
-    val id = glGenBuffers()
+abstract class BufferObject : OpenGlResource(glGenBuffers()) {
     abstract val type: Int
     var size = 0
         protected set
