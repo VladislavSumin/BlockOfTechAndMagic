@@ -1,6 +1,6 @@
 package ru.vladislavsumin.opengl.buffer
 
-import ru.vladislavsumin.opengl.OpenGL.*
+import org.lwjgl.opengl.GL33.*
 
 class ElementBufferObject : BufferObject() {
     override val type: Int

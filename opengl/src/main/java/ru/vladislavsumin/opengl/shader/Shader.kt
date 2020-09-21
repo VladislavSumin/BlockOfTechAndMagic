@@ -1,6 +1,6 @@
 package ru.vladislavsumin.opengl.shader
 
-import ru.vladislavsumin.opengl.OpenGL.*
+import org.lwjgl.opengl.GL33.*
 import ru.vladislavsumin.opengl.OpenGlResource
 import ru.vladislavsumin.opengl.markers.MainThread
 import java.io.Closeable

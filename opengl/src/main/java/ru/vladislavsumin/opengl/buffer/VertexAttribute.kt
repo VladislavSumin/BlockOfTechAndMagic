@@ -1,6 +1,7 @@
 package ru.vladislavsumin.opengl.buffer
 
-import ru.vladislavsumin.opengl.OpenGL
+import org.lwjgl.opengl.GL33.*
+
 
 class VertexAttribute(
     val size: Int,
@@ -11,6 +12,6 @@ class VertexAttribute(
         val glId: Int,
         val size: Int
     ) {
-        FLOAT(OpenGL.GL_FLOAT, 4)
+        FLOAT(GL_FLOAT, 4)
     }
 }
