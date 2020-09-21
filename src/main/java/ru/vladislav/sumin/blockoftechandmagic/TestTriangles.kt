@@ -3,8 +3,8 @@ package ru.vladislav.sumin.blockoftechandmagic
 import ru.vladislavsumin.opengl.markers.MainThread
 import ru.vladislavsumin.opengl.buffer.*
 import ru.vladislav.sumin.blockoftechandmagic.shader.ShaderManager
-import ru.vladislav.sumin.blockoftechandmagic.shader.ShaderProgram
-import ru.vladislav.sumin.blockoftechandmagic.shader.ShaderType
+import ru.vladislavsumin.opengl.shader.ShaderProgram
+import ru.vladislavsumin.opengl.shader.ShaderType
 import javax.inject.Inject
 import javax.inject.Singleton
 

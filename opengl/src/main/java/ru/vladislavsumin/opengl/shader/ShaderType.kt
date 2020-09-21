@@ -1,4 +1,4 @@
-package ru.vladislav.sumin.blockoftechandmagic.shader
+package ru.vladislavsumin.opengl.shader
 
 import ru.vladislavsumin.opengl.OpenGL
 

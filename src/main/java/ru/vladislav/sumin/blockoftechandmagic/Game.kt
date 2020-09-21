@@ -11,7 +11,7 @@ import org.lwjgl.system.MemoryStack
 import org.lwjgl.system.MemoryUtil.*
 import ru.vladislavsumin.opengl.markers.MainThread
 import ru.vladislav.sumin.blockoftechandmagic.userinput.UserInputKeyCallBack
-import ru.vladislav.sumin.blockoftechandmagic.utils.use
+import ru.vladislavsumin.opengl.utils.use
 import javax.inject.Inject
 import javax.inject.Singleton
 

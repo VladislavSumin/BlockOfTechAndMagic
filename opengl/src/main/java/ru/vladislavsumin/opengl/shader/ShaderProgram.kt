@@ -1,16 +1,38 @@
-package ru.vladislav.sumin.blockoftechandmagic.shader
+package ru.vladislavsumin.opengl.shader
 
 import org.lwjgl.system.MemoryStack
 import ru.vladislavsumin.opengl.markers.MainThread
 import ru.vladislavsumin.opengl.OpenGL.*
-import ru.vladislav.sumin.blockoftechandmagic.utils.use
+import ru.vladislavsumin.opengl.utils.use
 import java.io.Closeable
 
 class ShaderProgram(
-    val id: Int
+    vararg shaders: Shader,
+    val isCloseChildAfterCompile: Boolean = false
 ) : Closeable {
+    val id: Int = glCreateProgram()
     var isClosed = false
         private set
+
+    init {
+        try {
+            shaders.forEach {
+                glAttachShader(id, it.id)
+            }
+            glLinkProgram(id)
+
+            val status = glGetProgrami(id, GL_LINK_STATUS)
+            if (status == 0) {
+                glDeleteProgram(id)
+                val message = glGetProgramInfoLog(id)
+                throw ShaderProgramCreateException("Program compile status failed. Shaders: $shaders, error: $message")
+            }
+        } finally {
+            if (isCloseChildAfterCompile) {
+                shaders.forEach { it.close() }
+            }
+        }
+    }
 
     @MainThread
     private val uniforms: Array<Uniform> by lazy(LazyThreadSafetyMode.NONE) {

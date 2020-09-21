@@ -3,6 +3,7 @@ package ru.vladislav.sumin.blockoftechandmagic.shader
 import ru.vladislavsumin.opengl.markers.MainThread
 import ru.vladislavsumin.opengl.markers.MainThreadBlocking
 import ru.vladislav.sumin.blockoftechandmagic.resource.exceptions.ResourceNotFoundException
+import ru.vladislavsumin.opengl.shader.*
 
 interface ShaderManager {
     @MainThreadBlocking
