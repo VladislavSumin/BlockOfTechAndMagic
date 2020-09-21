@@ -1,10 +1,8 @@
 package ru.vladislavsumin.opengl.shader
 
-import java.lang.Exception
+import ru.vladislavsumin.opengl.OpenGlException
 
-open class ShaderException(message: String) : Exception(message)
+open class ShaderException(message: String) : OpenGlException(message)
 
 class ShaderCompileException(message: String) : ShaderException(message)
-class ShaderAlreadyClosedException(message: String) : ShaderException(message)
 class ShaderProgramCreateException(message: String) : ShaderException(message)
-class ProgramAlreadyClosedException(message: String) : ShaderException(message)

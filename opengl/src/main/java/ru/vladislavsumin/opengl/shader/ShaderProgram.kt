@@ -10,9 +10,6 @@ class ShaderProgram(
     vararg shaders: Shader,
     val isCloseChildAfterCompile: Boolean = false
 ) : OpenGlResource(glCreateProgram()) {
-    var isClosed = false
-        private set
-
     init {
         try {
             shaders.forEach {
@@ -54,8 +51,7 @@ class ShaderProgram(
 
     @MainThread
     override fun close() {
-        if (isClosed) throw ProgramAlreadyClosedException("Shader $this already closed")
-        isClosed = true
+        super.close()
         glDeleteProgram(id)
     }
 

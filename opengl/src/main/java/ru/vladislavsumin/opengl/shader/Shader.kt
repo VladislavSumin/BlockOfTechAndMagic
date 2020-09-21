@@ -9,8 +9,7 @@ class Shader(
     shaderCode: String,
     val shaderType: ShaderType
 ) : OpenGlResource(glCreateShader(shaderType.shaderGlType)) {
-    var isClosed = false
-        private set
+
 
     init {
         glShaderSource(id, shaderCode)
@@ -26,8 +25,7 @@ class Shader(
 
     @MainThread
     override fun close() {
-        if (isClosed) throw ShaderAlreadyClosedException("Shader $this already closed")
-        isClosed = true
+        super.close()
         glDeleteShader(id)
     }
 }

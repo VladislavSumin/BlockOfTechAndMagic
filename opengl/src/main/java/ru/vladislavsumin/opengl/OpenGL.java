@@ -167,4 +167,8 @@ public class OpenGL {
     public static String glGetActiveUniform(int program, int index, IntBuffer size, IntBuffer type) {
         return GL20.glGetActiveUniform(program, index, size, type);
     }
+
+    public static int glGenTextures() {
+        return GL11.glGenTextures();
+    }
 }
