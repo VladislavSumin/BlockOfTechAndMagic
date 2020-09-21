@@ -1,6 +1,6 @@
 package ru.vladislav.sumin.blockoftechandmagic.resource
 
-import ru.vladislav.sumin.blockoftechandmagic.markers.IoThread
+import ru.vladislavsumin.opengl.markers.IoThread
 import ru.vladislav.sumin.blockoftechandmagic.resource.exceptions.ResourceNotFoundException
 import java.io.InputStream
 

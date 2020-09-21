@@ -1,6 +1,6 @@
-package ru.vladislav.sumin.blockoftechandmagic.render.buffer
+package ru.vladislavsumin.opengl.buffer
 
-import ru.vladislav.sumin.blockoftechandmagic.render.OpenGL.*
+import ru.vladislavsumin.opengl.OpenGL.*
 
 class ElementBufferObject : BufferObject() {
     override val type: Int

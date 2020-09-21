@@ -1,7 +1,7 @@
 package ru.vladislav.sumin.blockoftechandmagic.shader
 
-import ru.vladislav.sumin.blockoftechandmagic.markers.MainThread
-import ru.vladislav.sumin.blockoftechandmagic.render.OpenGL.glDeleteShader
+import ru.vladislavsumin.opengl.markers.MainThread
+import ru.vladislavsumin.opengl.OpenGL.glDeleteShader
 import java.io.Closeable
 
 class Shader(

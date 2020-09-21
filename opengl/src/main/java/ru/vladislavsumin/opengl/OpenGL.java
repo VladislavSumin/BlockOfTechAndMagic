@@ -1,7 +1,6 @@
-package ru.vladislav.sumin.blockoftechandmagic.render;
+package ru.vladislavsumin.opengl;
 
 import org.lwjgl.opengl.*;
-import org.lwjgl.system.NativeType;
 
 import java.nio.IntBuffer;
 

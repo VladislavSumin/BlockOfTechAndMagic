@@ -1,8 +1,8 @@
 package ru.vladislav.sumin.blockoftechandmagic.shader
 
-import ru.vladislav.sumin.blockoftechandmagic.markers.IoThread
-import ru.vladislav.sumin.blockoftechandmagic.markers.MainThread
-import ru.vladislav.sumin.blockoftechandmagic.render.OpenGL.*
+import ru.vladislavsumin.opengl.markers.IoThread
+import ru.vladislavsumin.opengl.markers.MainThread
+import ru.vladislavsumin.opengl.OpenGL.*
 import ru.vladislav.sumin.blockoftechandmagic.resource.ResourceManager
 import javax.inject.Inject
 import javax.inject.Singleton

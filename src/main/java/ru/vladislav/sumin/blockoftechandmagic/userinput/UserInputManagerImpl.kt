@@ -2,7 +2,7 @@ package ru.vladislav.sumin.blockoftechandmagic.userinput
 
 import org.lwjgl.glfw.GLFW.*
 import ru.vladislav.sumin.blockoftechandmagic.Game
-import ru.vladislav.sumin.blockoftechandmagic.markers.MainThread
+import ru.vladislavsumin.opengl.markers.MainThread
 import javax.inject.Inject
 import javax.inject.Singleton
 

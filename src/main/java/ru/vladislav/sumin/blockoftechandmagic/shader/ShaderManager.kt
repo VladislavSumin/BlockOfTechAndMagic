@@ -1,7 +1,7 @@
 package ru.vladislav.sumin.blockoftechandmagic.shader
 
-import ru.vladislav.sumin.blockoftechandmagic.markers.MainThread
-import ru.vladislav.sumin.blockoftechandmagic.markers.MainThreadBlocking
+import ru.vladislavsumin.opengl.markers.MainThread
+import ru.vladislavsumin.opengl.markers.MainThreadBlocking
 import ru.vladislav.sumin.blockoftechandmagic.resource.exceptions.ResourceNotFoundException
 
 interface ShaderManager {

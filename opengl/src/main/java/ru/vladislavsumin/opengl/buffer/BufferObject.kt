@@ -1,7 +1,7 @@
-package ru.vladislav.sumin.blockoftechandmagic.render.buffer
+package ru.vladislavsumin.opengl.buffer
 
-import ru.vladislav.sumin.blockoftechandmagic.markers.MainThread
-import ru.vladislav.sumin.blockoftechandmagic.render.OpenGL.*
+import ru.vladislavsumin.opengl.OpenGL.*
+import ru.vladislavsumin.opengl.markers.MainThread
 import java.io.Closeable
 import java.lang.Exception
 

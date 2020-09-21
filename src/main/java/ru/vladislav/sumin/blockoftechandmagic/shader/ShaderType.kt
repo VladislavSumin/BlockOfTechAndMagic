@@ -1,6 +1,6 @@
 package ru.vladislav.sumin.blockoftechandmagic.shader
 
-import ru.vladislav.sumin.blockoftechandmagic.render.OpenGL
+import ru.vladislavsumin.opengl.OpenGL
 
 enum class ShaderType(
         val extension: String,

@@ -1,4 +1,4 @@
-package ru.vladislav.sumin.blockoftechandmagic.markers
+package ru.vladislavsumin.opengl.markers
 
 @Retention(AnnotationRetention.SOURCE)
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.CONSTRUCTOR, AnnotationTarget.PROPERTY)

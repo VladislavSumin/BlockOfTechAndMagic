@@ -1,15 +1,12 @@
 package ru.vladislav.sumin.blockoftechandmagic
 
-import org.lwjgl.opengl.GL33.*
-import ru.vladislav.sumin.blockoftechandmagic.markers.MainThread
-import ru.vladislav.sumin.blockoftechandmagic.render.OpenGL
-import ru.vladislav.sumin.blockoftechandmagic.render.buffer.*
+import ru.vladislavsumin.opengl.markers.MainThread
+import ru.vladislavsumin.opengl.buffer.*
 import ru.vladislav.sumin.blockoftechandmagic.shader.ShaderManager
 import ru.vladislav.sumin.blockoftechandmagic.shader.ShaderProgram
 import ru.vladislav.sumin.blockoftechandmagic.shader.ShaderType
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.math.sin
 
 @Singleton
 class TestTriangles @Inject constructor(

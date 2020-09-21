@@ -1,4 +1,4 @@
-package ru.vladislav.sumin.blockoftechandmagic.render.buffer
+package ru.vladislavsumin.opengl.buffer
 
 typealias VBO = VertexBufferObject
 typealias EBO = ElementBufferObject

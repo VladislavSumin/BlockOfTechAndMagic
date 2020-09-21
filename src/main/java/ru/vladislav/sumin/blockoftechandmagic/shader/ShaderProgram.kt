@@ -1,8 +1,8 @@
 package ru.vladislav.sumin.blockoftechandmagic.shader
 
 import org.lwjgl.system.MemoryStack
-import ru.vladislav.sumin.blockoftechandmagic.markers.MainThread
-import ru.vladislav.sumin.blockoftechandmagic.render.OpenGL.*
+import ru.vladislavsumin.opengl.markers.MainThread
+import ru.vladislavsumin.opengl.OpenGL.*
 import ru.vladislav.sumin.blockoftechandmagic.utils.use
 import java.io.Closeable
 
