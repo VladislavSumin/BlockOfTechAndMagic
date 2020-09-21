@@ -13,7 +13,7 @@ class ShaderProgram(
     init {
         try {
             shaders.forEach {
-                glAttachShader(id, it.id)
+                it.attach(id)
             }
             glLinkProgram(id)
 

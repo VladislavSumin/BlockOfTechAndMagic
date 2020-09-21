@@ -23,6 +23,10 @@ class Shader(
         }
     }
 
+    internal fun attach(programId: Int) {
+        glAttachShader(programId, id)
+    }
+
     @MainThread
     override fun close() {
         super.close()
