@@ -1,6 +1,5 @@
 package ru.vladislavsumin.opengl.buffer
 
-import org.lwjgl.opengl.GL33
 import ru.vladislavsumin.opengl.EBO
 import org.lwjgl.opengl.GL33.*
 import ru.vladislavsumin.opengl.VBO
@@ -33,7 +32,7 @@ class VertexArrayObject(
         if (ebo != null) {
             glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0)
         } else {
-            GL33.glDrawArrays(GL33.GL_TRIANGLES, 0, count)
+            glDrawArrays(GL_TRIANGLES, 0, count)
         }
         glBindVertexArray(0)
     }

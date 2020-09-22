@@ -71,6 +71,7 @@ class Game @Inject constructor(
         // bindings available for use.
         GL.createCapabilities()
         println("OpenGL version: ${glGetString(GL_VERSION)}")
+        glEnable(GL_DEPTH_TEST);
 //        glViewport(0, 0, WIDTH, HEIGHT)
     }
 

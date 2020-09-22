@@ -1,7 +1,6 @@
 package ru.vladislav.sumin.blockoftechandmagic
 
 import glm.mat._4.Mat4
-import glm.vec._3.Vec3
 import org.lwjgl.opengl.GL33
 import ru.vladislavsumin.opengl.markers.MainThread
 import ru.vladislavsumin.opengl.buffer.*
@@ -25,11 +24,57 @@ class TestTriangles @Inject constructor(
     private lateinit var vao: VAO
     private lateinit var program: ShaderProgram
     private lateinit var texture: Texture
-    private lateinit var matrix: Mat4
+    private lateinit var modelMatrix: Mat4
+    private lateinit var viewMatrix: Mat4
+    private lateinit var projectionMatrix: Mat4
 
     @MainThread
     fun init() {
         program = createProgram()
+
+        val cube = floatArrayOf(
+            -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+            0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+            0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+            0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+            0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+            0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+            0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+            -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+            -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+            -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+            -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+            0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+            0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+            0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+            0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+            0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+            0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+            0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+            0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+            0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+            0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+            0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+            0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+            -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+        )
 
         val quad = floatArrayOf(
             0.5f, 0.5f, 0.0f,  // Верхний правый угол
@@ -53,25 +98,33 @@ class TestTriangles @Inject constructor(
 
         val vbo = VBO()
         val ebo = EBO()
-        vbo.setData(triangle)
+        vbo.setData(cube)
         ebo.setData(indices)
 
         val attr1 = VertexAttribute(3, VertexAttribute.Type.FLOAT, false)
-        val attr2 = VertexAttribute(3, VertexAttribute.Type.FLOAT, false)
+//        val attr2 = VertexAttribute(3, VertexAttribute.Type.FLOAT, false)
         val attr3 = VertexAttribute(2, VertexAttribute.Type.FLOAT, false)
-        val attrs = VertexAttributeArray(attr1, attr2, attr3)
-        vao = VAO(vbo, ebo, attrs)
+        val attrs = VertexAttributeArray(attr1, attr3)
+        vao = VAO(vbo, null, attrs)
 
         texture = textureManager.loadTexture("testTexture")
 
-//        matrix = Mat4().rotateZ(Math.toRadians(45.0).toFloat()).scale(0.5f)
+        modelMatrix = Mat4()
+        viewMatrix = Mat4().translate(0f, 0f, -3f)
+        projectionMatrix = Mat4().perspective(Math.toRadians(45.0).toFloat(), 1f, 0.1f, 100f)
 
     }
 
     fun draw() {
         program.useProgram()
-        matrix = Mat4().identity().rotateZ((sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat())
-        GL33.glUniformMatrix4fv(0, false, matrix.toFa_())
+        modelMatrix
+            .identity()
+            .rotateX((sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat())
+            .rotateZ((sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat())
+
+        GL33.glUniformMatrix4fv(GL33.glGetUniformLocation(program.id,"model"), false, modelMatrix.toFa_())
+        GL33.glUniformMatrix4fv(GL33.glGetUniformLocation(program.id,"view"), false, viewMatrix.toFa_())
+        GL33.glUniformMatrix4fv(GL33.glGetUniformLocation(program.id,"projection"), false, projectionMatrix.toFa_())
         texture.bindTexture()
 //        GL33.glUniform4f(0, 0.0f, (sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat(), 0.0f, 1.0f);
         vao.draw()
