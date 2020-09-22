@@ -15,12 +15,17 @@ object Configuration {
             else -> throw Error("Unrecognized or unsupported Operating system. Please set \"lwjglNatives\" manually")
         }
 
+        const val glm = "1.0.1"
+
         const val dagger = "2.29.1"
     }
 
     object Dependencies {
         const val dagger = "com.google.dagger:dagger:${Versions.dagger}"
         const val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
+
+        const val glm = "io.github.java-graphics:glm:${Versions.glm}"
+
 
         object LWJGL {
             const val lwjgl = "org.lwjgl:lwjgl:${Versions.lwjgl}"

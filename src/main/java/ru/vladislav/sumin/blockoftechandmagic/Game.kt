@@ -22,7 +22,7 @@ class Game @Inject constructor(
         private val triangles: TestTriangles
 ) {
     companion object {
-        private const val WIDTH = 800
+        private const val WIDTH = 600
         private const val HEIGHT = 600
     }
 

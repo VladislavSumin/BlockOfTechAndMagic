@@ -4,7 +4,7 @@ import ru.vladislavsumin.opengl.markers.CallSuper
 import ru.vladislavsumin.opengl.markers.MainThread
 import java.io.Closeable
 
-abstract class OpenGlResource(protected val id: Int) : Closeable {
+abstract class OpenGlResource(protected open val id: Int) : Closeable {
     private var isClosed = false
 
     @MainThread

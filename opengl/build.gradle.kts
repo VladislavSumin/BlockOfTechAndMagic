@@ -13,7 +13,11 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
 
-    // implementation(platform("org.lwjgl:lwjgl-bom:$lwjglVersion"))
+    with(Configuration.Dependencies) {
+        api(glm)
+    }
+
+// implementation(platform("org.lwjgl:lwjgl-bom:$lwjglVersion"))
     with(Configuration.Dependencies.LWJGL) {
         api(lwjgl)
         api(assimp)

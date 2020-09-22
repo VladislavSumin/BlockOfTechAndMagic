@@ -10,6 +10,10 @@ class ShaderProgram(
     vararg shaders: Shader,
     val isCloseChildAfterCompile: Boolean = false
 ) : OpenGlResource(glCreateProgram()) {
+    //TODO add unifroms and remove that
+    public override val id: Int
+        get() = super.id
+
     init {
         try {
             shaders.forEach {

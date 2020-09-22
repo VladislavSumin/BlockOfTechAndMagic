@@ -1,5 +1,7 @@
 package ru.vladislav.sumin.blockoftechandmagic
 
+import glm.mat._4.Mat4
+import glm.vec._3.Vec3
 import org.lwjgl.opengl.GL33
 import ru.vladislavsumin.opengl.markers.MainThread
 import ru.vladislavsumin.opengl.buffer.*
@@ -23,6 +25,7 @@ class TestTriangles @Inject constructor(
     private lateinit var vao: VAO
     private lateinit var program: ShaderProgram
     private lateinit var texture: Texture
+    private lateinit var matrix: Mat4
 
     @MainThread
     fun init() {
@@ -61,10 +64,14 @@ class TestTriangles @Inject constructor(
 
         texture = textureManager.loadTexture("testTexture")
 
+//        matrix = Mat4().rotateZ(Math.toRadians(45.0).toFloat()).scale(0.5f)
+
     }
 
     fun draw() {
         program.useProgram()
+        matrix = Mat4().identity().rotateZ((sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat())
+        GL33.glUniformMatrix4fv(0, false, matrix.toFa_())
         texture.bindTexture()
 //        GL33.glUniform4f(0, 0.0f, (sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat(), 0.0f, 1.0f);
         vao.draw()
