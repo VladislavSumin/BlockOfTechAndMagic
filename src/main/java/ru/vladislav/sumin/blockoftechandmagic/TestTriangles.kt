@@ -1,6 +1,7 @@
 package ru.vladislav.sumin.blockoftechandmagic
 
 import glm.mat._4.Mat4
+import glm.vec._3.Vec3
 import org.lwjgl.opengl.GL33
 import ru.vladislavsumin.opengl.markers.MainThread
 import ru.vladislavsumin.opengl.buffer.*
@@ -12,6 +13,7 @@ import ru.vladislavsumin.opengl.VBO
 import ru.vladislavsumin.opengl.shader.ShaderProgram
 import ru.vladislavsumin.opengl.shader.ShaderType
 import ru.vladislavsumin.opengl.texture.Texture
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.sin
@@ -27,54 +29,73 @@ class TestTriangles @Inject constructor(
     private lateinit var modelMatrix: Mat4
     private lateinit var viewMatrix: Mat4
     private lateinit var projectionMatrix: Mat4
+    private lateinit var cubes: Array<Vec3>
 
     @MainThread
     fun init() {
         program = createProgram()
 
-        val cube = floatArrayOf(
-            -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-            0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-            0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-            0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-
-            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-            0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-            0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-            0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-            -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-            -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-            -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-            -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-            0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-            0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-            0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-            0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-            0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-            0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-            0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-            0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-            0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-            0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-            0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-            0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-            -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+        cubes = arrayOf(
+            Vec3(0.0f, 0.0f, 0.0f)
+//            Vec3(2.0f, 5.0f, -15.0f),
+//            Vec3(-1.5f, -2.2f, -2.5f),
+//            Vec3(-3.8f, -2.0f, -12.3f),
+//            Vec3(2.4f, -0.4f, -3.5f),
+//            Vec3(-1.7f, 3.0f, -7.5f),
+//            Vec3(1.3f, -2.0f, -2.5f),
+//            Vec3(1.5f, 2.0f, -2.5f),
+//            Vec3(1.5f, 0.2f, -1.5f),
+//            Vec3(-1.3f, 1.0f, -1.5f)
         )
+
+        val cube = floatArrayOf(
+            -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
+            0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
+            0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+            0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+            -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
+
+            -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+            0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
+            0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
+            0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
+            -0.5f, 0.5f, 0.5f, 0.0f, 1.0f,
+            -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+
+            -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+            -0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+            -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+            -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+
+            0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+            0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+            0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+            0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+            0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+            0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+
+            -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+            0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
+            0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
+            0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
+            -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+            -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+
+            -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
+            0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+            0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+            0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+            -0.5f, 0.5f, 0.5f, 0.0f, 0.0f,
+            -0.5f, 0.5f, -0.5f, 0.0f, 1.0f
+        )
+
+        val cubePack = FloatArray(cube.size * 1)
+        for (i in 0 until cubePack.size/cube.size) {
+            System.arraycopy(cube, 0, cubePack, i * cube.size, cube.size)
+        }
 
         val quad = floatArrayOf(
             0.5f, 0.5f, 0.0f,  // Верхний правый угол
@@ -98,7 +119,7 @@ class TestTriangles @Inject constructor(
 
         val vbo = VBO()
         val ebo = EBO()
-        vbo.setData(cube)
+        vbo.setData(cubePack)
         ebo.setData(indices)
 
         val attr1 = VertexAttribute(3, VertexAttribute.Type.FLOAT, false)
@@ -111,23 +132,33 @@ class TestTriangles @Inject constructor(
 
         modelMatrix = Mat4()
         viewMatrix = Mat4().translate(0f, 0f, -3f)
-        projectionMatrix = Mat4().perspective(Math.toRadians(45.0).toFloat(), 1f, 0.1f, 100f)
+        projectionMatrix = Mat4().perspective(Math.toRadians(45.0).toFloat(), 8 / 6f, 0.1f, 100f)
 
     }
 
     fun draw() {
         program.useProgram()
-        modelMatrix
-            .identity()
-            .rotateX((sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat())
-            .rotateZ((sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat())
-
-        GL33.glUniformMatrix4fv(GL33.glGetUniformLocation(program.id,"model"), false, modelMatrix.toFa_())
-        GL33.glUniformMatrix4fv(GL33.glGetUniformLocation(program.id,"view"), false, viewMatrix.toFa_())
-        GL33.glUniformMatrix4fv(GL33.glGetUniformLocation(program.id,"projection"), false, projectionMatrix.toFa_())
         texture.bindTexture()
+
+        val tmp = FloatArray(16)
+
+        cubes.forEach { pos ->
+            modelMatrix
+                .identity()
+                .translate(pos)
+                    .rotateX((sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat())
+                    .rotateZ((sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat())
+
+            GL33.glUniformMatrix4fv(GL33.glGetUniformLocation(program.id, "model"), false, modelMatrix.toFa(tmp))
+            GL33.glUniformMatrix4fv(GL33.glGetUniformLocation(program.id, "view"), false, viewMatrix.toFa(tmp))
+            GL33.glUniformMatrix4fv(
+                GL33.glGetUniformLocation(program.id, "projection"),
+                false,
+                projectionMatrix.toFa(tmp)
+            )
 //        GL33.glUniform4f(0, 0.0f, (sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat(), 0.0f, 1.0f);
-        vao.draw()
+            vao.draw()
+        }
     }
 
     private fun createProgram(): ShaderProgram {
