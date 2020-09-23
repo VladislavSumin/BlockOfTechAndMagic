@@ -16,6 +16,7 @@ import ru.vladislavsumin.opengl.texture.Texture
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.math.cos
 import kotlin.math.sin
 
 @Singleton
@@ -36,16 +37,16 @@ class TestTriangles @Inject constructor(
         program = createProgram()
 
         cubes = arrayOf(
-            Vec3(0.0f, 0.0f, 0.0f)
-//            Vec3(2.0f, 5.0f, -15.0f),
-//            Vec3(-1.5f, -2.2f, -2.5f),
-//            Vec3(-3.8f, -2.0f, -12.3f),
-//            Vec3(2.4f, -0.4f, -3.5f),
-//            Vec3(-1.7f, 3.0f, -7.5f),
-//            Vec3(1.3f, -2.0f, -2.5f),
-//            Vec3(1.5f, 2.0f, -2.5f),
-//            Vec3(1.5f, 0.2f, -1.5f),
-//            Vec3(-1.3f, 1.0f, -1.5f)
+            Vec3(0.0f, 0.0f, 0.0f),
+            Vec3(2.0f, 5.0f, -15.0f),
+            Vec3(-1.5f, -2.2f, -2.5f),
+            Vec3(-3.8f, -2.0f, -12.3f),
+            Vec3(2.4f, -0.4f, -3.5f),
+            Vec3(-1.7f, 3.0f, -7.5f),
+            Vec3(1.3f, -2.0f, -2.5f),
+            Vec3(1.5f, 2.0f, -2.5f),
+            Vec3(1.5f, 0.2f, -1.5f),
+            Vec3(-1.3f, 1.0f, -1.5f)
         )
 
         val cube = floatArrayOf(
@@ -93,7 +94,7 @@ class TestTriangles @Inject constructor(
         )
 
         val cubePack = FloatArray(cube.size * 1)
-        for (i in 0 until cubePack.size/cube.size) {
+        for (i in 0 until cubePack.size / cube.size) {
             System.arraycopy(cube, 0, cubePack, i * cube.size, cube.size)
         }
 
@@ -136,18 +137,27 @@ class TestTriangles @Inject constructor(
 
     }
 
+    private fun calculateCamPos() {
+        val time = System.currentTimeMillis() / 1000.0
+        val radius = 10.0f;
+        val camX = sin(time) * radius;
+        val camZ = cos(time) * radius;
+        viewMatrix = viewMatrix.identity().lookAt(Vec3(camX, 0.0, camZ), Vec3(0.0, 0.0, 0.0), Vec3(0.0, 1.0, 0.0));
+    }
+
     fun draw() {
         program.useProgram()
         texture.bindTexture()
 
+        calculateCamPos()
         val tmp = FloatArray(16)
 
         cubes.forEach { pos ->
             modelMatrix
                 .identity()
                 .translate(pos)
-                    .rotateX((sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat())
-                    .rotateZ((sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat())
+                .rotateX((sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat())
+                .rotateZ((sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat())
 
             GL33.glUniformMatrix4fv(GL33.glGetUniformLocation(program.id, "model"), false, modelMatrix.toFa(tmp))
             GL33.glUniformMatrix4fv(GL33.glGetUniformLocation(program.id, "view"), false, viewMatrix.toFa(tmp))
