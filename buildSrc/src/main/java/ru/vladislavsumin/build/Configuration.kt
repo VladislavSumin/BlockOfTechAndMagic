@@ -17,10 +17,15 @@ object Configuration {
 
         const val glm = "1.0.1"
 
+        const val coroutines = "1.3.9"
         const val dagger = "2.29.1"
+
+        //Testing
+        const val jUnit4 = "4.12"
     }
 
     object Dependencies {
+        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
         const val dagger = "com.google.dagger:dagger:${Versions.dagger}"
         const val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
 
@@ -99,6 +104,10 @@ object Configuration {
                 val yoga = "org.lwjgl:lwjgl-yoga:${Versions.lwjgl}:${Versions.lwjglNatives}"
                 val zstd = "org.lwjgl:lwjgl-zstd:${Versions.lwjgl}:${Versions.lwjglNatives}"
                 val vulkan = "org.lwjgl:lwjgl-vulkan:${Versions.lwjgl}:${Versions.lwjglNatives}"
+            }
+
+            object Test {
+                const val jUnit4 = "junit:junit:4.12"
             }
         }
     }
