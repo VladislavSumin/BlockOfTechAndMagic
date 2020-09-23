@@ -1,4 +1,4 @@
-package ru.vladislav.sumin.blockoftechandmagic.userinput
+package ru.vladislav.sumin.blockoftechandmagic.client.userinput
 
 import org.lwjgl.glfw.GLFWKeyCallbackI
 

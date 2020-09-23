@@ -1,5 +1,6 @@
 package ru.vladislav.sumin.blockoftechandmagic
 
+import ru.vladislav.sumin.blockoftechandmagic.client.Game
 import ru.vladislav.sumin.blockoftechandmagic.di.AppComponent
 import ru.vladislav.sumin.blockoftechandmagic.di.DaggerAppComponent
 import javax.inject.Inject

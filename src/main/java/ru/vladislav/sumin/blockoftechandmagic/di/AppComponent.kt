@@ -7,8 +7,7 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [
     ResourceModule::class,
-    ClientModule::class,
-    UserInputModule::class
+    ClientModule::class
 ])
 interface AppComponent {
     fun inject(starter: Starter)

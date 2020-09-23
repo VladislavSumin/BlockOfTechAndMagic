@@ -1,4 +1,4 @@
-package ru.vladislav.sumin.blockoftechandmagic
+package ru.vladislav.sumin.blockoftechandmagic.client
 
 import dagger.Lazy
 import org.lwjgl.Version
@@ -9,8 +9,9 @@ import org.lwjgl.opengl.GL
 import org.lwjgl.opengl.GL33.*
 import org.lwjgl.system.MemoryStack
 import org.lwjgl.system.MemoryUtil.*
+import ru.vladislav.sumin.blockoftechandmagic.TestTriangles
 import ru.vladislavsumin.opengl.markers.MainThread
-import ru.vladislav.sumin.blockoftechandmagic.userinput.UserInputKeyCallBack
+import ru.vladislav.sumin.blockoftechandmagic.client.userinput.UserInputKeyCallBack
 import ru.vladislavsumin.opengl.utils.use
 import javax.inject.Inject
 import javax.inject.Singleton

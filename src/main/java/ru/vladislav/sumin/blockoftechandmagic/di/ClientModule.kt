@@ -6,6 +6,8 @@ import ru.vladislav.sumin.blockoftechandmagic.client.shader.ShaderManager
 import ru.vladislav.sumin.blockoftechandmagic.client.shader.ShaderManagerImpl
 import ru.vladislav.sumin.blockoftechandmagic.client.texture.TextureManager
 import ru.vladislav.sumin.blockoftechandmagic.client.texture.TextureManagerImpl
+import ru.vladislav.sumin.blockoftechandmagic.client.userinput.UserInputKeyCallBack
+import ru.vladislav.sumin.blockoftechandmagic.client.userinput.UserInputManagerImpl
 
 @Module
 abstract class ClientModule {
@@ -14,4 +16,7 @@ abstract class ClientModule {
 
     @Binds
     abstract fun bindTextureManager(manager: TextureManagerImpl): TextureManager
+
+    @Binds
+    abstract fun bind(userInputManager: UserInputManagerImpl): UserInputKeyCallBack
 }
