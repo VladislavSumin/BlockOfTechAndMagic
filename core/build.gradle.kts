@@ -12,4 +12,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
+    with(Configuration.Dependencies) {
+        implementation(coroutines)
+    }
 }
