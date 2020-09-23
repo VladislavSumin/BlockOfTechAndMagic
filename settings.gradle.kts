@@ -1,3 +1,3 @@
-include(":opengl")
+include(":core", ":opengl")
 rootProject.name = "BlockOfTechAndMagic"
 

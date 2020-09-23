@@ -6,4 +6,6 @@
 /buildSrc/.gradle/
 /buildSrc/build/
 
+/core/build/
+
 /opengl/build/
