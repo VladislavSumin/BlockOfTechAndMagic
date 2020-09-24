@@ -9,3 +9,5 @@
 /core/build/
 
 /opengl/build/
+
+/hs_err_pid*.log
