@@ -14,6 +14,7 @@ dependencies {
     implementation(kotlin("stdlib"))
 
     with(Configuration.Dependencies) {
+        implementation(coroutines)
         api(glm)
     }
 
@@ -91,5 +92,9 @@ dependencies {
         runtimeOnly(zstd)
         if (Configuration.Versions.lwjglNatives == "natives-macos")
             runtimeOnly(vulkan)
+    }
+
+    with(Configuration.Dependencies.Test) {
+        testImplementation(jUnit4)
     }
 }
