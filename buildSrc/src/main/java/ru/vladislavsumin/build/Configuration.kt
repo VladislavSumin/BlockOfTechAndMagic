@@ -106,9 +106,10 @@ object Configuration {
                 val vulkan = "org.lwjgl:lwjgl-vulkan:${Versions.lwjgl}:${Versions.lwjglNatives}"
             }
 
-            object Test {
-                const val jUnit4 = "junit:junit:4.12"
-            }
+        }
+
+        object Test {
+            const val jUnit4 = "junit:junit:${Versions.jUnit4}"
         }
     }
 }
