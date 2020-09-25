@@ -1,10 +1,10 @@
 package ru.vladislav.sumin.blockoftechandmagic.client.texture
 
+import kotlinx.coroutines.runBlocking
 import ru.vladislav.sumin.blockoftechandmagic.resource.ResourceManager
+import ru.vladislavsumin.opengl.texture.TextureLoader
 import ru.vladislavsumin.opengl.texture.Texture
-import java.awt.image.BufferedImage
-import java.io.InputStream
-import javax.imageio.ImageIO
+import ru.vladislavsumin.opengl.utils.BufferUtils
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -13,19 +13,9 @@ class TextureManagerImpl @Inject constructor(
     private val resourceManager: ResourceManager
 ) : TextureManager {
 
-    init {
-        //Tmp workaround //TODO fix that
-        ImageIO.getCacheDirectory()
-    }
-
-    override fun loadTexture(name: String): Texture {
-        val stream = resourceManager.getResourceAsStream("$name.png")
-        val image = loadImage(stream)
-        return Texture(image)
-    }
-
-    private fun loadImage(input: InputStream): BufferedImage {
-        val imageStream = ImageIO.createImageInputStream(input)
-        return ImageIO.read(imageStream)
+    override fun loadTexture(name: String): Texture = runBlocking {
+        val path = resourceManager.getResourceAsPath("$name.png")
+        val buffer = BufferUtils.loadFile(path, true)
+        TextureLoader.loadTextureFromDirectBuffer(buffer)
     }
 }

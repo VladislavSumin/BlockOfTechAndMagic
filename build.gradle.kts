@@ -23,6 +23,7 @@ dependencies {
     implementation(project(":opengl"))
 
     with(Configuration.Dependencies) {
+        implementation(coroutines)
         implementation(dagger)
         kapt(daggerCompiler)
     }
