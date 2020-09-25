@@ -6,12 +6,8 @@ plugins {
     kotlin("kapt")
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    implementation(kotlin("stdlib"))
+    api(kotlin("stdlib"))
     with(Configuration.Dependencies) {
         api(coroutines)
     }

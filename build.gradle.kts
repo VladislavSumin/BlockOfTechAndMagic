@@ -9,19 +9,17 @@ plugins {
 group = "ru.vladislavsumin"
 version = "1.0-SNAPSHOT"
 
-repositories {
-    mavenCentral()
-    maven { setUrl("https://jitpack.io") }
-
+allprojects {
+    repositories {
+        mavenCentral()
+        maven { setUrl("https://jitpack.io") }
+    }
 }
 
 dependencies {
-    implementation(kotlin("stdlib"))
-
     implementation(project(":opengl"))
 
     with(Configuration.Dependencies) {
-        implementation(coroutines)
         implementation(dagger)
         kapt(daggerCompiler)
     }

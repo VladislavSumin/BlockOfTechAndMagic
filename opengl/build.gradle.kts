@@ -6,17 +6,10 @@ plugins {
     kotlin("kapt")
 }
 
-repositories {
-    mavenCentral()
-    maven { setUrl("https://jitpack.io") }
-}
-
 dependencies {
-    implementation(kotlin("stdlib"))
     api(project(":core"))
 
     with(Configuration.Dependencies) {
-        implementation(coroutines)
         api(glm)
     }
 
