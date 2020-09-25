@@ -2,7 +2,7 @@ package ru.vladislavsumin.opengl.texture
 
 import org.lwjgl.stb.STBImage.*
 import org.lwjgl.system.MemoryStack.stackPush
-import ru.vladislavsumin.opengl.utils.use
+import ru.vladislavsumin.core.utils.use
 import java.io.IOException
 import java.nio.ByteBuffer
 

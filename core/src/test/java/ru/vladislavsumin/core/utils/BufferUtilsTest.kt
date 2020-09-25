@@ -1,4 +1,4 @@
-package ru.vladislavsumin.opengl.utils
+package ru.vladislavsumin.core.utils
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -7,6 +7,7 @@ import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import ru.vladislavsumin.core.utils.BufferUtils
 import java.nio.ByteBuffer
 import java.nio.file.Path
 import java.nio.file.Paths

@@ -13,6 +13,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
+    api(project(":core"))
 
     with(Configuration.Dependencies) {
         implementation(coroutines)
@@ -93,9 +94,5 @@ dependencies {
         runtimeOnly(zstd)
         if (Configuration.Versions.lwjglNatives == "natives-macos")
             runtimeOnly(vulkan)
-    }
-
-    with(Configuration.Dependencies.Test) {
-        testImplementation(jUnit4)
     }
 }

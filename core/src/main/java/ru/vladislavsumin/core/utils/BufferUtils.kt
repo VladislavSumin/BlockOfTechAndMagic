@@ -1,4 +1,4 @@
-package ru.vladislavsumin.opengl.utils
+package ru.vladislavsumin.core.utils
 
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.suspendCancellableCoroutine

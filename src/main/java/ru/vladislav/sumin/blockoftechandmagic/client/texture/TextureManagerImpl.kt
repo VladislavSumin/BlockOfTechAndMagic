@@ -4,7 +4,7 @@ import kotlinx.coroutines.runBlocking
 import ru.vladislav.sumin.blockoftechandmagic.resource.ResourceManager
 import ru.vladislavsumin.opengl.texture.TextureLoader
 import ru.vladislavsumin.opengl.texture.Texture
-import ru.vladislavsumin.opengl.utils.BufferUtils
+import ru.vladislavsumin.core.utils.BufferUtils
 import javax.inject.Inject
 import javax.inject.Singleton
 

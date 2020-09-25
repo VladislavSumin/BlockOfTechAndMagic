@@ -4,7 +4,7 @@ import org.lwjgl.system.MemoryStack
 import ru.vladislavsumin.opengl.markers.MainThread
 import org.lwjgl.opengl.GL33.*
 import ru.vladislavsumin.opengl.OpenGlResource
-import ru.vladislavsumin.opengl.utils.use
+import ru.vladislavsumin.core.utils.use
 
 class ShaderProgram(
     vararg shaders: Shader,

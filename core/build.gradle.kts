@@ -12,4 +12,11 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
+    with(Configuration.Dependencies) {
+        api(coroutines)
+    }
+
+    with(Configuration.Dependencies.Test) {
+        testImplementation(jUnit4)
+    }
 }

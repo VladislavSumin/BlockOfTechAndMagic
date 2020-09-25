@@ -14,7 +14,7 @@ import ru.vladislav.sumin.blockoftechandmagic.client.userinput.UserInputCursorCa
 import ru.vladislavsumin.opengl.markers.MainThread
 import ru.vladislav.sumin.blockoftechandmagic.client.userinput.UserInputKeyCallBack
 import ru.vladislav.sumin.blockoftechandmagic.client.userinput.UserInputManager
-import ru.vladislavsumin.opengl.utils.use
+import ru.vladislavsumin.core.utils.use
 import javax.inject.Inject
 import javax.inject.Singleton
 
