@@ -3,7 +3,6 @@ package ru.vladislav.sumin.blockoftechandmagic.client
 import org.lwjgl.Version
 import org.lwjgl.glfw.Callbacks
 import org.lwjgl.glfw.GLFW.*
-import org.lwjgl.glfw.GLFWErrorCallback
 import org.lwjgl.opengl.GL
 import org.lwjgl.opengl.GL33.*
 import org.lwjgl.system.MemoryStack
@@ -15,6 +14,7 @@ import ru.vladislavsumin.opengl.markers.MainThread
 import ru.vladislav.sumin.blockoftechandmagic.client.userinput.UserInputKeyCallBack
 import ru.vladislav.sumin.blockoftechandmagic.client.userinput.UserInputManager
 import ru.vladislavsumin.core.utils.use
+import ru.vladislavsumin.opengl.utils.GlfwUtils
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -36,10 +36,8 @@ class Game @Inject constructor(
 
     @MainThread
     fun run() {
-        //TODO Add logging library
         println("Hello LWJGL " + Version.getVersion() + "!")
-        setupGlfwLogs()
-        setupGlfw()
+        GlfwUtils.initGlfw()
         setupGlfwWindow()
         setupOpenGl()
         loop()
@@ -48,31 +46,10 @@ class Game @Inject constructor(
         Callbacks.glfwFreeCallbacks(window)
         glfwDestroyWindow(window)
 
-        // Terminate GLFW and free the error callback
-        glfwTerminate()
-        glfwSetErrorCallback(null)!!.free()
-    }
-
-    @MainThread
-    private fun setupGlfw() {
-        // Initialize GLFW.
-        // Most GLFW functions will not work before doing this.
-        check(glfwInit()) { "Unable to initialize GLFW" }
-
-        glfwDefaultWindowHints() // optional, the current window hints are already the default
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3)
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3)
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE)
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE)
-
+        GlfwUtils.terminateGlfw()
     }
 
     private fun setupOpenGl() {
-        // This line is critical for LWJGL's interoperation with GLFW's
-        // OpenGL context, or any context that is managed externally.
-        // LWJGL detects the context that is current in the current thread,
-        // creates the GLCapabilities instance and makes the OpenGL
-        // bindings available for use.
         GL.createCapabilities()
         println("OpenGL version: ${glGetString(GL_VERSION)}")
         glEnable(GL_DEPTH_TEST);
@@ -138,10 +115,7 @@ class Game @Inject constructor(
     @MainThread
     private fun loop() {
         //TODO add window resize callback
-        // Set the clear color
 
-        // Run the rendering loop until the user has attempted to close
-        // the window or has pressed the ESCAPE key.
         triangles.init()
 
         var lastFrameTime = glfwGetTime()
@@ -149,30 +123,22 @@ class Game @Inject constructor(
             val currentFrameTime = glfwGetTime()
             val deltaTime = currentFrameTime - lastFrameTime
             lastFrameTime = currentFrameTime
-            // Poll for window events. The key callback above will only be
-            // invoked during this call.
+
             glfwPollEvents()
             userInputManager.calculateUserInput()
             playerCamera.updatePosition(deltaTime)
 
             // Draw section
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f)
-            glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT) // clear the framebuffer
+            glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
             triangles.draw()
-            glfwSwapBuffers(window) // swap the color buffers
+
+            glfwSwapBuffers(window)
         }
     }
 
     @MainThread
     fun setNeedClose() {
         glfwSetWindowShouldClose(window, true)
-    }
-
-    @MainThread
-    private fun setupGlfwLogs() {
-        // Setup an error callback. The default implementation
-        // will print the error message in System.err.
-        //TODO change logs output
-        GLFWErrorCallback.createPrint(System.err).set()
     }
 }
