@@ -8,11 +8,12 @@ abstract class Camera {
     protected val pos = Vec3(0f, 0f, 0f)
     protected val front = Vec3(0f, 0f, -1f)
     protected val up = Vec3(0f, 1f, 0f)
+    protected val tmp1 = Vec3()
 
     val matrix = Mat4()
 
-    fun calculate() {
-        //TODO add tmp vector to prevent + operator vector allocation
-        glm.lookAt(matrix, pos, pos + front, up)
+    protected fun calculate() {
+        tmp1.put(pos).plusAssign(front)
+        glm.lookAt(matrix, pos, tmp1, up)
     }
 }

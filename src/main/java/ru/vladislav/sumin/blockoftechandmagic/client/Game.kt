@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL33.*
 import org.lwjgl.system.MemoryStack
 import org.lwjgl.system.MemoryUtil.*
 import ru.vladislav.sumin.blockoftechandmagic.TestTriangles
+import ru.vladislav.sumin.blockoftechandmagic.client.camera.PlayerCamera
 import ru.vladislavsumin.opengl.markers.MainThread
 import ru.vladislav.sumin.blockoftechandmagic.client.userinput.UserInputKeyCallBack
 import ru.vladislavsumin.opengl.utils.use
@@ -20,7 +21,8 @@ import javax.inject.Singleton
 @Singleton
 class Game @Inject constructor(
     private val userInputKeyCallBack: UserInputKeyCallBack,
-    private val triangles: TestTriangles
+    private val triangles: TestTriangles,
+    private val playerCamera: PlayerCamera
 ) {
     companion object {
         private const val WIDTH = 800
@@ -131,6 +133,7 @@ class Game @Inject constructor(
             // Poll for window events. The key callback above will only be
             // invoked during this call.
             glfwPollEvents()
+            playerCamera.updatePosition()
 
             // Draw section
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f)
