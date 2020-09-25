@@ -28,12 +28,16 @@ class UserInputManagerImpl @Inject constructor() : UserInputManager {
     }
 
     inner class UserInputInputCursorCallbackListener : UserInputCursorCallback {
-        //TODO make this values from code
-        private var lastX = 400.0
-        private var lastY = 300.0
+        private var lastX = 0.0
+        private var lastY = 0.0
 
-        private var x = 400.0
-        private var y = 300.0
+        private var x = 0.0
+        private var y = 0.0
+
+        override fun setInitialCursorPosition(x: Double, y: Double) {
+            this.x = x
+            this.y = y
+        }
 
         override fun invoke(window: Long, xpos: Double, ypos: Double) {
             x = xpos

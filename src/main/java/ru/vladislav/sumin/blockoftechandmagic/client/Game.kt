@@ -92,6 +92,14 @@ class Game @Inject constructor(
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED)
 
         glfwSetKeyCallback(window, userInputKeyCallBack)
+
+        MemoryStack.stackPush().use {
+            val x = it.mallocDouble(1)
+            val y = it.mallocDouble(1)
+            glfwGetCursorPos(window, x, y)
+            userInputCursorCallback.setInitialCursorPosition(x[0], y[0])
+        }
+
         glfwSetCursorPosCallback(window, userInputCursorCallback)
 
 
