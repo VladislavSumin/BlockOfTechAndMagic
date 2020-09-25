@@ -25,13 +25,18 @@ class PlayerCamera @Inject constructor(
 
 
     private fun calculateMovement(timeDelta: Double) {
+        //TODO оптимизировать вычисления
         val keys = userInputManager.pressedKeys
         // Camera controls
+        val frontXZ = tmp1.put(front)
+        frontXZ.y = 0f
+        frontXZ.normalizeAssign()
+
         val cameraSpeed = 2f * timeDelta
         if (keys[GLFW_KEY_W])
-            pos += front * cameraSpeed
+            pos += frontXZ * cameraSpeed
         if (keys[GLFW_KEY_S])
-            pos -= front * cameraSpeed
+            pos -= frontXZ * cameraSpeed
         if (keys[GLFW_KEY_A])
             pos -= glm.normalize(glm.cross(front, up)) * cameraSpeed
         if (keys[GLFW_KEY_D])
@@ -44,6 +49,7 @@ class PlayerCamera @Inject constructor(
     }
 
     private fun calculateRotation() {
+        //TODO оптимизировать вычисления
         val sensitivity = 0.4
         yaw += userInputManager.deltaX * sensitivity
         pitch += userInputManager.deltaY * sensitivity
@@ -55,6 +61,6 @@ class PlayerCamera @Inject constructor(
         front.y = sin(Math.toRadians(pitch)).toFloat()
         front.z = (cos(Math.toRadians(pitch)) * sin(Math.toRadians(yaw))).toFloat()
 
-        front.normalize(tmp1)
+        front.normalizeAssign()
     }
 }
