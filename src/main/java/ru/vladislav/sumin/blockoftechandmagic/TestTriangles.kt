@@ -4,19 +4,19 @@ import glm_.glm
 import glm_.mat4x4.Mat4
 import glm_.vec3.Vec3
 import org.lwjgl.opengl.GL33
-import ru.vladislavsumin.opengl.markers.MainThread
-import ru.vladislavsumin.opengl.buffer.*
+import ru.vladislav.sumin.blockoftechandmagic.client.camera.PlayerCamera
 import ru.vladislav.sumin.blockoftechandmagic.client.shader.ShaderManager
 import ru.vladislav.sumin.blockoftechandmagic.client.texture.TextureManager
 import ru.vladislavsumin.opengl.EBO
 import ru.vladislavsumin.opengl.VAO
 import ru.vladislavsumin.opengl.VBO
+import ru.vladislavsumin.opengl.buffer.VertexAttribute
+import ru.vladislavsumin.opengl.buffer.VertexAttributeArray
+import ru.vladislavsumin.opengl.markers.MainThread
 import ru.vladislavsumin.opengl.shader.ShaderProgram
 import ru.vladislavsumin.opengl.shader.ShaderType
 import ru.vladislavsumin.opengl.texture.Texture
-import java.nio.ByteBuffer
 import java.nio.FloatBuffer
-import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.cos
@@ -25,7 +25,8 @@ import kotlin.math.sin
 @Singleton
 class TestTriangles @Inject constructor(
     private val shaderManager: ShaderManager,
-    private val textureManager: TextureManager
+    private val textureManager: TextureManager,
+    private val playerCamera: PlayerCamera
 ) {
     private lateinit var vao: VAO
     private lateinit var program: ShaderProgram
@@ -163,7 +164,7 @@ class TestTriangles @Inject constructor(
                     .rotate((sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat(), Vec3(0f, 0f, 1f))
 
             GL33.glUniformMatrix4fv(GL33.glGetUniformLocation(program.id, "model"), false, modelMatrix.to(tmp).array())
-            GL33.glUniformMatrix4fv(GL33.glGetUniformLocation(program.id, "view"), false, viewMatrix.to(tmp).array())
+            GL33.glUniformMatrix4fv(GL33.glGetUniformLocation(program.id, "view"), false, playerCamera.matrix.to(tmp).array())
             GL33.glUniformMatrix4fv(
                 GL33.glGetUniformLocation(program.id, "projection"),
                 false,

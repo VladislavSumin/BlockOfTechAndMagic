@@ -19,15 +19,13 @@ import javax.inject.Singleton
 
 @Singleton
 class Game @Inject constructor(
-        userInputKeyCallBackLazy: Lazy<UserInputKeyCallBack>,
-        private val triangles: TestTriangles
+    private val userInputKeyCallBack: UserInputKeyCallBack,
+    private val triangles: TestTriangles
 ) {
     companion object {
         private const val WIDTH = 800
         private const val HEIGHT = 600
     }
-
-    private val userInputKeyCallBack by lazy { userInputKeyCallBackLazy.get() }
 
     private var window: Long = 0
 
@@ -100,9 +98,9 @@ class Game @Inject constructor(
 
             // Center the window
             glfwSetWindowPos(
-                    window,
-                    (vidmode!!.width() - pWidth[0]) / 2,
-                    (vidmode.height() - pHeight[0]) / 2
+                window,
+                (vidmode!!.width() - pWidth[0]) / 2,
+                (vidmode.height() - pHeight[0]) / 2
             )
         }
 
