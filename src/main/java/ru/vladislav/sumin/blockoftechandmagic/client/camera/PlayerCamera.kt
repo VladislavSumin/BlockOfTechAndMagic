@@ -6,13 +6,20 @@ import ru.vladislav.sumin.blockoftechandmagic.client.userinput.UserInputManager
 import ru.vladislavsumin.opengl.camera.Camera
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.math.cos
+import kotlin.math.sin
 
 @Singleton
 class PlayerCamera @Inject constructor(
     private val userInputManager: UserInputManager
 ) : Camera() {
+
+    private var yaw = -90.0
+    private var pitch = 0.0
+
     fun updatePosition(timeDelta: Double) {
         calculateMovement(timeDelta)
+        calculateRotation()
         calculate()
     }
 
@@ -34,5 +41,20 @@ class PlayerCamera @Inject constructor(
         if (keys[GLFW_KEY_LEFT_SHIFT])
             pos -= up * cameraSpeed
 
+    }
+
+    private fun calculateRotation() {
+        val sensitivity = 0.4
+        yaw += userInputManager.deltaX * sensitivity
+        pitch += userInputManager.deltaY * sensitivity
+
+        if (pitch > 89) pitch = 89.0
+        else if (pitch < -89) pitch = -89.0
+
+        front.x = (cos(Math.toRadians(pitch)) * cos(Math.toRadians(yaw))).toFloat()
+        front.y = sin(Math.toRadians(pitch)).toFloat()
+        front.z = (cos(Math.toRadians(pitch)) * sin(Math.toRadians(yaw))).toFloat()
+
+        front.normalize(tmp1)
     }
 }

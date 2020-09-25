@@ -1,6 +1,5 @@
 package ru.vladislav.sumin.blockoftechandmagic.client
 
-import dagger.Lazy
 import org.lwjgl.Version
 import org.lwjgl.glfw.Callbacks
 import org.lwjgl.glfw.GLFW.*
@@ -11,8 +10,10 @@ import org.lwjgl.system.MemoryStack
 import org.lwjgl.system.MemoryUtil.*
 import ru.vladislav.sumin.blockoftechandmagic.TestTriangles
 import ru.vladislav.sumin.blockoftechandmagic.client.camera.PlayerCamera
+import ru.vladislav.sumin.blockoftechandmagic.client.userinput.UserInputCursorCallback
 import ru.vladislavsumin.opengl.markers.MainThread
 import ru.vladislav.sumin.blockoftechandmagic.client.userinput.UserInputKeyCallBack
+import ru.vladislav.sumin.blockoftechandmagic.client.userinput.UserInputManager
 import ru.vladislavsumin.opengl.utils.use
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -21,6 +22,8 @@ import javax.inject.Singleton
 @Singleton
 class Game @Inject constructor(
     private val userInputKeyCallBack: UserInputKeyCallBack,
+    private val userInputCursorCallback: UserInputCursorCallback,
+    private val userInputManager: UserInputManager,
     private val triangles: TestTriangles,
     private val playerCamera: PlayerCamera
 ) {
@@ -86,8 +89,12 @@ class Game @Inject constructor(
         window = glfwCreateWindow(WIDTH, HEIGHT, "Block ot tech and magic", NULL, NULL)
         if (window == NULL) throw RuntimeException("Failed to create the GLFW window")
 
-        // Setup a key callback. It will be called every time a key is pressed, repeated or released.
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED)
+
         glfwSetKeyCallback(window, userInputKeyCallBack)
+        glfwSetCursorPosCallback(window, userInputCursorCallback)
+
+
         MemoryStack.stackPush().use { stack ->
             val pWidth = stack.mallocInt(1) // int*
             val pHeight = stack.mallocInt(1) // int*
@@ -137,6 +144,7 @@ class Game @Inject constructor(
             // Poll for window events. The key callback above will only be
             // invoked during this call.
             glfwPollEvents()
+            userInputManager.calculateUserInput()
             playerCamera.updatePosition(deltaTime)
 
             // Draw section
