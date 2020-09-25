@@ -129,11 +129,15 @@ class Game @Inject constructor(
         // the window or has pressed the ESCAPE key.
         triangles.init()
 
+        var lastFrameTime = glfwGetTime()
         while (!glfwWindowShouldClose(window)) {
+            val currentFrameTime = glfwGetTime()
+            val deltaTime = currentFrameTime - lastFrameTime
+            lastFrameTime = currentFrameTime
             // Poll for window events. The key callback above will only be
             // invoked during this call.
             glfwPollEvents()
-            playerCamera.updatePosition()
+            playerCamera.updatePosition(deltaTime)
 
             // Draw section
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f)

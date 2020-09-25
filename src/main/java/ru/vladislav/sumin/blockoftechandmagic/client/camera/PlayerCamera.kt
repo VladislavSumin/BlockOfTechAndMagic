@@ -11,16 +11,16 @@ import javax.inject.Singleton
 class PlayerCamera @Inject constructor(
     private val userInputManager: UserInputManager
 ) : Camera() {
-    fun updatePosition() {
-        calculateMovement()
+    fun updatePosition(timeDelta: Double) {
+        calculateMovement(timeDelta)
         calculate()
     }
 
 
-    private fun calculateMovement() {
+    private fun calculateMovement(timeDelta: Double) {
         val keys = userInputManager.pressedKeys
         // Camera controls
-        val cameraSpeed = 0.03f
+        val cameraSpeed = 2f * timeDelta
         if (keys[GLFW_KEY_W])
             pos += front * cameraSpeed
         if (keys[GLFW_KEY_S])
