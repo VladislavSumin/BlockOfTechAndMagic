@@ -1,7 +1,8 @@
 package ru.vladislav.sumin.blockoftechandmagic
 
-import glm.mat._4.Mat4
-import glm.vec._3.Vec3
+import glm_.glm
+import glm_.mat4x4.Mat4
+import glm_.vec3.Vec3
 import org.lwjgl.opengl.GL33
 import ru.vladislavsumin.opengl.markers.MainThread
 import ru.vladislavsumin.opengl.buffer.*
@@ -13,6 +14,8 @@ import ru.vladislavsumin.opengl.VBO
 import ru.vladislavsumin.opengl.shader.ShaderProgram
 import ru.vladislavsumin.opengl.shader.ShaderType
 import ru.vladislavsumin.opengl.texture.Texture
+import java.nio.ByteBuffer
+import java.nio.FloatBuffer
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -131,9 +134,9 @@ class TestTriangles @Inject constructor(
 
         texture = textureManager.loadTexture("testTexture")
 
-        modelMatrix = Mat4()
-        viewMatrix = Mat4().translate(0f, 0f, -3f)
-        projectionMatrix = Mat4().perspective(Math.toRadians(45.0).toFloat(), 8 / 6f, 0.1f, 100f)
+        modelMatrix = Mat4(1f)
+        viewMatrix = Mat4(1f).translate(0f, 0f, -3f)
+        projectionMatrix = glm.perspective(45f, 8 / 6f, 0.1f, 100f)
 
     }
 
@@ -142,7 +145,7 @@ class TestTriangles @Inject constructor(
         val radius = 10.0f;
         val camX = sin(time) * radius;
         val camZ = cos(time) * radius;
-        viewMatrix = viewMatrix.identity().lookAt(Vec3(camX, 0.0, camZ), Vec3(0.0, 0.0, 0.0), Vec3(0.0, 1.0, 0.0));
+        viewMatrix = glm.lookAt(Vec3(camX, 0.0, camZ), Vec3(0.0, 0.0, 0.0), Vec3(0.0, 1.0, 0.0));
     }
 
     fun draw() {
@@ -150,21 +153,21 @@ class TestTriangles @Inject constructor(
         texture.bindTexture()
 
         calculateCamPos()
-        val tmp = FloatArray(16)
+        val tmp = FloatBuffer.allocate(16)
 
         cubes.forEach { pos ->
-            modelMatrix
-                .identity()
-                .translate(pos)
-                .rotateX((sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat())
-                .rotateZ((sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat())
+            modelMatrix =
+                Mat4()
+                    .translate(pos)
+                    .rotate((sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat(), Vec3(1f, 0f, 0f))
+                    .rotate((sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat(), Vec3(0f, 0f, 1f))
 
-            GL33.glUniformMatrix4fv(GL33.glGetUniformLocation(program.id, "model"), false, modelMatrix.toFa(tmp))
-            GL33.glUniformMatrix4fv(GL33.glGetUniformLocation(program.id, "view"), false, viewMatrix.toFa(tmp))
+            GL33.glUniformMatrix4fv(GL33.glGetUniformLocation(program.id, "model"), false, modelMatrix.to(tmp).array())
+            GL33.glUniformMatrix4fv(GL33.glGetUniformLocation(program.id, "view"), false, viewMatrix.to(tmp).array())
             GL33.glUniformMatrix4fv(
                 GL33.glGetUniformLocation(program.id, "projection"),
                 false,
-                projectionMatrix.toFa(tmp)
+                projectionMatrix.to(tmp).array()
             )
 //        GL33.glUniform4f(0, 0.0f, (sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat(), 0.0f, 1.0f);
             vao.draw()

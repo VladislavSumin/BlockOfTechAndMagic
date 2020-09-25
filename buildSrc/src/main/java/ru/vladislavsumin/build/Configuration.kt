@@ -15,7 +15,7 @@ object Configuration {
             else -> throw Error("Unrecognized or unsupported Operating system. Please set \"lwjglNatives\" manually")
         }
 
-        const val glm = "1.0.1"
+        const val glm = "v1.0.1"
 
         const val coroutines = "1.3.9"
         const val dagger = "2.29.1"
@@ -29,7 +29,7 @@ object Configuration {
         const val dagger = "com.google.dagger:dagger:${Versions.dagger}"
         const val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
 
-        const val glm = "io.github.java-graphics:glm:${Versions.glm}"
+        const val glm = "com.github.kotlin-graphics:glm:${Versions.glm}"
 
 
         object LWJGL {
