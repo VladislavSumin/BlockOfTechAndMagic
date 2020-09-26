@@ -11,3 +11,6 @@
 /opengl/build/
 
 /hs_err_pid*.log
+
+#Game files
+/settings.properties

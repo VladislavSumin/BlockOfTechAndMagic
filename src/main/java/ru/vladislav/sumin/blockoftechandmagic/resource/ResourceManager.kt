@@ -1,14 +1,13 @@
 package ru.vladislav.sumin.blockoftechandmagic.resource
 
-import ru.vladislavsumin.opengl.markers.IoThread
-import ru.vladislav.sumin.blockoftechandmagic.resource.exceptions.ResourceNotFoundException
 import java.io.InputStream
 import java.nio.file.Path
+import java.util.*
 
 interface ResourceManager {
-    @IoThread
-    @Throws(ResourceNotFoundException::class)
+    suspend fun getConfiguration(name: String): Properties
+
     fun getResourceAsStream(path: String): InputStream
 
-    fun getResourceAsPath(path: String):Path
+    fun getResourceAsPath(path: String): Path
 }

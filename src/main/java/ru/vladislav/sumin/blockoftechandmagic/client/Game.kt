@@ -1,5 +1,6 @@
 package ru.vladislav.sumin.blockoftechandmagic.client
 
+import kotlinx.coroutines.runBlocking
 import org.lwjgl.Version
 import org.lwjgl.glfw.GLFW.*
 import org.lwjgl.opengl.GL
@@ -7,6 +8,7 @@ import org.lwjgl.opengl.GL33.*
 import ru.vladislav.sumin.blockoftechandmagic.client.event.EventManager
 import ru.vladislav.sumin.blockoftechandmagic.client.render.WorldRender
 import ru.vladislav.sumin.blockoftechandmagic.client.window.GameWindow
+import ru.vladislav.sumin.blockoftechandmagic.resource.ResourceManager
 import ru.vladislavsumin.opengl.markers.MainThread
 import ru.vladislavsumin.opengl.utils.GlfwUtils
 import javax.inject.Inject
@@ -18,6 +20,7 @@ class Game @Inject constructor(
     private val gameWindow: GameWindow,
     private val eventManager: EventManager,
     private val worldRender: WorldRender,
+    private val resourceManager: ResourceManager
 ) {
     companion object {
         private const val WIDTH = 800
@@ -26,6 +29,10 @@ class Game @Inject constructor(
 
     @MainThread
     fun run() {
+        val props = runBlocking {
+            resourceManager.getConfiguration("settings")
+        }
+
         println("Hello LWJGL " + Version.getVersion() + "!")
         GlfwUtils.initGlfw()
         setupGlfwWindow()
