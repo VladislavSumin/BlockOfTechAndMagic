@@ -4,10 +4,8 @@ import org.lwjgl.Version
 import org.lwjgl.glfw.GLFW.*
 import org.lwjgl.opengl.GL
 import org.lwjgl.opengl.GL33.*
-import ru.vladislav.sumin.blockoftechandmagic.client.camera.PlayerCamera
 import ru.vladislav.sumin.blockoftechandmagic.client.event.EventManager
 import ru.vladislav.sumin.blockoftechandmagic.client.render.WorldRender
-import ru.vladislav.sumin.blockoftechandmagic.client.userinput.UserInputManager
 import ru.vladislav.sumin.blockoftechandmagic.client.window.GameWindow
 import ru.vladislavsumin.opengl.markers.MainThread
 import ru.vladislavsumin.opengl.utils.GlfwUtils
