@@ -4,7 +4,7 @@ import org.lwjgl.Version
 import org.lwjgl.glfw.GLFW.*
 import org.lwjgl.opengl.GL
 import org.lwjgl.opengl.GL33.*
-import ru.vladislav.sumin.blockoftechandmagic.TestTriangles
+import ru.vladislav.sumin.blockoftechandmagic.TextBlocks
 import ru.vladislav.sumin.blockoftechandmagic.client.camera.PlayerCamera
 import ru.vladislav.sumin.blockoftechandmagic.client.userinput.UserInputManager
 import ru.vladislav.sumin.blockoftechandmagic.client.window.GameWindow
@@ -18,7 +18,7 @@ import javax.inject.Singleton
 class Game @Inject constructor(
     private val gameWindow: GameWindow,
     private val userInputManager: UserInputManager,
-    private val triangles: TestTriangles,
+    private val triangles: TextBlocks,
     private val playerCamera: PlayerCamera
 ) {
     companion object {
