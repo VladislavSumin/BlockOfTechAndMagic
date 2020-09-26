@@ -25,23 +25,18 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 @Singleton
-class TextBlocks @Inject constructor(
-    private val shaderManager: ShaderManager,
-    private val textureManager: TextureManager,
-    private val playerCamera: PlayerCamera
+class TestBlocks @Inject constructor(
+    private val textureManager: TextureManager
 ) {
     private lateinit var vao: VAO
-    private lateinit var program: ShaderProgram
     private lateinit var texture: Texture
     private lateinit var modelMatrix: Mat4
-    private lateinit var projectionMatrix: Mat4
     private lateinit var cubes: Array<Vec3>
+    private lateinit var tempF16: FloatBuffer
 
     @MainThread
     fun init() {
-        program = createProgram()
-        val uniforms = program.uniforms
-
+        tempF16 = MemoryUtil.memAllocFloat(16)
 //        cubes = arrayOf(
 //            Vec3(0.0f, 0.0f, 0.0f),
 //            Vec3(2.0f, 5.0f, -15.0f),
@@ -118,15 +113,12 @@ class TextBlocks @Inject constructor(
         texture = textureManager.loadTexture("testTexture")
 
         modelMatrix = Mat4(1f)
-        projectionMatrix = glm.perspective(45f, 8 / 6f, 0.1f, 100f)
 
     }
 
-    fun draw() {
+    fun draw(program: ShaderProgram) {
         program.useProgram()
         texture.bindTexture()
-
-        val tmp = MemoryUtil.memAllocFloat(16)
 
         cubes.forEach { pos ->
             modelMatrix =
@@ -135,12 +127,15 @@ class TextBlocks @Inject constructor(
 //                    .rotate((sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat(), Vec3(1f, 0f, 0f))
 //                    .rotate((sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat(), Vec3(0f, 0f, 1f))
 
-            program.setUniform(program.uniforms["model"]!!, modelMatrix to tmp)
-            program.setUniform(program.uniforms["view"]!!, playerCamera.matrix to tmp)
-            program.setUniform(program.uniforms["projection"]!!, projectionMatrix to tmp)
-
+            program.setUniform(program.uniforms["model"]!!, modelMatrix to tempF16)
             vao.draw()
         }
+    }
+
+    fun destroy() {
+        MemoryUtil.memFree(tempF16)
+        texture.close()
+        vao.close()
     }
 
     private fun createGround(size: Int, y: Float): Array<Vec3> {
@@ -151,15 +146,4 @@ class TextBlocks @Inject constructor(
         }
     }
 
-    private fun createProgram(): ShaderProgram {
-        val vertexShader = shaderManager.loadShader("vertexShader2", ShaderType.VERTEX)
-        val fragmentShader = shaderManager.loadShader("variableColorShader", ShaderType.FRAGMENT)
-
-        val shaderProgram = shaderManager.createShaderProgram(vertexShader, fragmentShader)
-
-        vertexShader.close()
-        fragmentShader.close()
-
-        return shaderProgram
-    }
 }

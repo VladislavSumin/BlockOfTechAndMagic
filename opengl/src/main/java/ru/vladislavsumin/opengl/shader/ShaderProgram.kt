@@ -55,6 +55,10 @@ class ShaderProgram(
         }
     }
 
+    fun setUniform(name: String, data: Any) {
+        setUniform(uniforms[name]!!, data)
+    }
+
     fun setUniform(uniform: Uniform, data: Any) {
         @Suppress("UNNECESSARY_NOT_NULL_ASSERTION")
         when (uniform.type) {
