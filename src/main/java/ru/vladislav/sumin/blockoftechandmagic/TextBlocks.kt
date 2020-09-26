@@ -38,6 +38,7 @@ class TextBlocks @Inject constructor(
     @MainThread
     fun init() {
         program = createProgram()
+        val uniforms = program.uniforms
 
 //        cubes = arrayOf(
 //            Vec3(0.0f, 0.0f, 0.0f),

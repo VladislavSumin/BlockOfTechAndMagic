@@ -35,15 +35,24 @@ class ShaderProgram(
     }
 
     @MainThread
-    private val uniforms: Array<Uniform> by lazy(LazyThreadSafetyMode.NONE) {
-        val uniformCount = glGetProgrami(id, GL_ACTIVE_UNIFORMS)
-        Array(uniformCount) { index ->
-            MemoryStack.stackPush().use {
-                val size = it.mallocInt(1)
-                val type = it.mallocInt(1)
+    val uniforms: HashMap<String, Uniform> by lazy(LazyThreadSafetyMode.NONE) {
+        MemoryStack.stackPush().use { memory ->
+            val size = memory.mallocInt(1)
+            val type = memory.mallocInt(1)
+
+            val uniformCount = glGetProgrami(id, GL_ACTIVE_UNIFORMS)
+            val result = HashMap<String, Uniform>()
+
+            for (index in 0 until uniformCount) {
                 val name = glGetActiveUniform(id, index, size, type)
-                Uniform(index, name, size[0], type[0])
+
+                val uniformType = (UniformType.values().find { it.openGlType == type[0] }
+                    ?: throw UnknownUniformType("Unknown uniform type ${type[0]}"))
+
+                val uniform = Uniform(index, name, size[0], uniformType)
+                result[uniform.name] = uniform
             }
+            result
         }
     }
 
@@ -59,5 +68,4 @@ class ShaderProgram(
         glDeleteProgram(id)
     }
 
-    data class Uniform(val id: Int, val name: String, val size: Int, val type: Int)
 }
