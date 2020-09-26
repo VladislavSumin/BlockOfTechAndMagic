@@ -4,6 +4,7 @@ import glm_.glm
 import glm_.mat4x4.Mat4
 import glm_.vec3.Vec3
 import org.lwjgl.opengl.GL33
+import org.lwjgl.system.MemoryUtil
 import ru.vladislav.sumin.blockoftechandmagic.client.camera.PlayerCamera
 import ru.vladislav.sumin.blockoftechandmagic.client.shader.ShaderManager
 import ru.vladislav.sumin.blockoftechandmagic.client.texture.TextureManager
@@ -16,6 +17,7 @@ import ru.vladislavsumin.opengl.markers.MainThread
 import ru.vladislavsumin.opengl.shader.ShaderProgram
 import ru.vladislavsumin.opengl.shader.ShaderType
 import ru.vladislavsumin.opengl.texture.Texture
+import java.nio.ByteBuffer
 import java.nio.FloatBuffer
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -124,7 +126,7 @@ class TextBlocks @Inject constructor(
         program.useProgram()
         texture.bindTexture()
 
-        val tmp = FloatBuffer.allocate(16)
+        val tmp = MemoryUtil.memAllocFloat(16)
 
         cubes.forEach { pos ->
             modelMatrix =
@@ -133,18 +135,10 @@ class TextBlocks @Inject constructor(
 //                    .rotate((sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat(), Vec3(1f, 0f, 0f))
 //                    .rotate((sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat(), Vec3(0f, 0f, 1f))
 
-            GL33.glUniformMatrix4fv(GL33.glGetUniformLocation(program.id, "model"), false, modelMatrix.to(tmp).array())
-            GL33.glUniformMatrix4fv(
-                GL33.glGetUniformLocation(program.id, "view"),
-                false,
-                playerCamera.matrix.to(tmp).array()
-            )
-            GL33.glUniformMatrix4fv(
-                GL33.glGetUniformLocation(program.id, "projection"),
-                false,
-                projectionMatrix.to(tmp).array()
-            )
-//        GL33.glUniform4f(0, 0.0f, (sin(System.currentTimeMillis().toDouble() / 400) / 2 + 0.5).toFloat(), 0.0f, 1.0f);
+            program.setUniform(program.uniforms["model"]!!, modelMatrix to tmp)
+            program.setUniform(program.uniforms["view"]!!, playerCamera.matrix to tmp)
+            program.setUniform(program.uniforms["projection"]!!, projectionMatrix to tmp)
+
             vao.draw()
         }
     }

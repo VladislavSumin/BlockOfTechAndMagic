@@ -32,7 +32,7 @@ class PlayerCamera @Inject constructor(
         frontXZ.y = 0f
         frontXZ.normalizeAssign()
 
-        val cameraSpeed = 2f * timeDelta
+        val cameraSpeed = 4f * timeDelta
         if (keys[GLFW_KEY_W])
             pos += frontXZ * cameraSpeed
         if (keys[GLFW_KEY_S])

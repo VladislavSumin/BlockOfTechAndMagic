@@ -1,19 +1,17 @@
 package ru.vladislavsumin.opengl.shader
 
+import org.lwjgl.opengl.GL33
 import org.lwjgl.system.MemoryStack
 import ru.vladislavsumin.opengl.markers.MainThread
 import org.lwjgl.opengl.GL33.*
 import ru.vladislavsumin.opengl.OpenGlResource
 import ru.vladislavsumin.core.utils.use
+import java.nio.FloatBuffer
 
 class ShaderProgram(
     vararg shaders: Shader,
     val isCloseChildAfterCompile: Boolean = false
 ) : OpenGlResource(glCreateProgram()) {
-    //TODO add unifroms and remove that
-    public override val id: Int
-        get() = super.id
-
     init {
         try {
             shaders.forEach {
@@ -45,18 +43,31 @@ class ShaderProgram(
 
             for (index in 0 until uniformCount) {
                 val name = glGetActiveUniform(id, index, size, type)
+                val uniformLocation = glGetUniformLocation(id, name)
 
                 val uniformType = (UniformType.values().find { it.openGlType == type[0] }
                     ?: throw UnknownUniformType("Unknown uniform type ${type[0]}"))
 
-                val uniform = Uniform(index, name, size[0], uniformType)
+                val uniform = Uniform(uniformLocation, name, size[0], uniformType)
                 result[uniform.name] = uniform
             }
             result
         }
     }
 
-    //TODO add function glUniform4f
+    fun setUniform(uniform: Uniform, data: Any) {
+        @Suppress("UNNECESSARY_NOT_NULL_ASSERTION")
+        when (uniform.type) {
+            UniformType.FLOAT_MAT4 -> {
+                glUniformMatrix4fv(
+                    uniform.id, false, data as FloatBuffer
+                )
+            }
+            UniformType.SAMPLER_2D -> {
+                assert(false)
+            }
+        }!!
+    }
 
     fun useProgram() {
         glUseProgram(id)
