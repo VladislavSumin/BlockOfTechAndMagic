@@ -5,6 +5,7 @@ import org.lwjgl.glfw.GLFW.*
 import org.lwjgl.opengl.GL
 import org.lwjgl.opengl.GL33.*
 import ru.vladislav.sumin.blockoftechandmagic.client.camera.PlayerCamera
+import ru.vladislav.sumin.blockoftechandmagic.client.event.EventManager
 import ru.vladislav.sumin.blockoftechandmagic.client.render.WorldRender
 import ru.vladislav.sumin.blockoftechandmagic.client.userinput.UserInputManager
 import ru.vladislav.sumin.blockoftechandmagic.client.window.GameWindow
@@ -17,8 +18,7 @@ import javax.inject.Singleton
 @Singleton
 class Game @Inject constructor(
     private val gameWindow: GameWindow,
-    private val userInputManager: UserInputManager,
-    private val playerCamera: PlayerCamera,
+    private val eventManager: EventManager,
     private val worldRender: WorldRender,
 ) {
     companion object {
@@ -74,8 +74,7 @@ class Game @Inject constructor(
 
             // Handle event section
             glfwPollEvents()
-            userInputManager.calculateUserInput()
-            playerCamera.updatePosition(deltaTime)
+            eventManager.calculateEvents(deltaTime)
 
             // Draw section
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f)
