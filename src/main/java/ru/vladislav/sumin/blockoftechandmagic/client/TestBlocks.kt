@@ -1,28 +1,19 @@
-package ru.vladislav.sumin.blockoftechandmagic
+package ru.vladislav.sumin.blockoftechandmagic.client
 
-import glm_.glm
 import glm_.mat4x4.Mat4
 import glm_.vec3.Vec3
-import org.lwjgl.opengl.GL33
 import org.lwjgl.system.MemoryUtil
-import ru.vladislav.sumin.blockoftechandmagic.client.camera.PlayerCamera
-import ru.vladislav.sumin.blockoftechandmagic.client.shader.ShaderManager
 import ru.vladislav.sumin.blockoftechandmagic.client.texture.TextureManager
-import ru.vladislavsumin.opengl.EBO
 import ru.vladislavsumin.opengl.VAO
 import ru.vladislavsumin.opengl.VBO
 import ru.vladislavsumin.opengl.buffer.VertexAttribute
 import ru.vladislavsumin.opengl.buffer.VertexAttributeArray
 import ru.vladislavsumin.opengl.markers.MainThread
 import ru.vladislavsumin.opengl.shader.ShaderProgram
-import ru.vladislavsumin.opengl.shader.ShaderType
 import ru.vladislavsumin.opengl.texture.Texture
-import java.nio.ByteBuffer
 import java.nio.FloatBuffer
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.math.cos
-import kotlin.math.sin
 
 @Singleton
 class TestBlocks @Inject constructor(
@@ -50,7 +41,7 @@ class TestBlocks @Inject constructor(
 //            Vec3(-1.3f, 1.0f, -1.5f)
 //        )
 
-        cubes = createGround(15, -3f)
+        cubes = createGround(16, -3f)
 
         val cube = floatArrayOf(
             -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,

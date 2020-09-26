@@ -2,7 +2,7 @@ package ru.vladislav.sumin.blockoftechandmagic.client.render
 
 import glm_.glm
 import org.lwjgl.system.MemoryUtil
-import ru.vladislav.sumin.blockoftechandmagic.TestBlocks
+import ru.vladislav.sumin.blockoftechandmagic.client.TestBlocks
 import ru.vladislav.sumin.blockoftechandmagic.client.camera.PlayerCamera
 import ru.vladislav.sumin.blockoftechandmagic.client.shader.ShaderManager
 import ru.vladislavsumin.opengl.shader.ShaderProgram
