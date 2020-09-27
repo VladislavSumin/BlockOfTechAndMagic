@@ -14,24 +14,39 @@ import kotlin.collections.ArrayList
 class ResourceManagerImpl @Inject constructor() : ResourceManager {
     private val resourceSources: MutableList<Path> = ArrayList()
 
-    init {
-        //TODO move to init fun
+    override fun init() {
+        createFileSystemsFromResources()
+        createThisJarFileSystem()
+    }
+
+    private fun createFileSystemsFromResources() {
+        //TODO optimize && refactor here
+        File("resources").listFiles()!!.asSequence()
+            .filter { it.name.endsWith("zip") }
+            .forEach {
+                resourceSources.add(
+                    createFileSystem(URI.create("jar:${it.toURI()}"))
+                        .rootDirectories.iterator().next()
+                )
+            }
+    }
+
+    private fun createThisJarFileSystem() {
         val uri = javaClass.classLoader.getResource("resourceMark")!!.toURI()
         if (uri.scheme == "jar") {
             val createFileSystem = createFileSystem(URI.create(uri.toString().split("!").first()))
             println(createFileSystem)
         }
         resourceSources.add(Paths.get(uri).parent)
-        println("AAAAA ALL DONE")
     }
 
     private fun createFileSystem(uri: URI): FileSystem {
         assert(uri.scheme == "jar")
-        val env = mutableMapOf("create" to "true")
+        val env = mutableMapOf("create" to "true", "useTempFile" to "false")
         return FileSystems.newFileSystem(uri, env)
     }
 
-    override suspend fun getConfiguration(name: String): Properties {
+    override fun getConfiguration(name: String): Properties {
         //TODO make async
         val userConfiguration = Paths.get("$name.properties")
         val defaultConfiguration = getResourceAsPath("configuration/$name.properties")
@@ -49,14 +64,19 @@ class ResourceManagerImpl @Inject constructor() : ResourceManager {
         return properties
     }
 
-    override fun getResourceAsStream(path: String): InputStream {
-        return javaClass.classLoader.getResourceAsStream(path)
+    override fun getResourceAsPath(path: String): Path {
+        return resourceSources
+            .asSequence()
+            .map { it.resolve(path) }
+            .find { Files.isRegularFile(it) }
             ?: throw ResourceNotFoundException("Resource $path not found")
     }
 
-    override fun getResourceAsPath(path: String): Path {
-        val resource = javaClass.classLoader.getResource(path)
-            ?: throw ResourceNotFoundException("Resource $path not found")
-        return Paths.get(resource.toURI())
+    override fun destroy() {
+        resourceSources
+            .asSequence()
+            .map { it.fileSystem }
+            .filter { it != FileSystems.getDefault() }
+            .forEach { it.close() }
     }
 }

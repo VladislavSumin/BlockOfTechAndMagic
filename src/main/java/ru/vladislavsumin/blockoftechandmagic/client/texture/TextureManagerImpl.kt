@@ -14,7 +14,7 @@ class TextureManagerImpl @Inject constructor(
 ) : TextureManager {
 
     override fun loadTexture(name: String): Texture = runBlocking {
-        val path = resourceManager.getResourceAsPath("$name.png")
+        val path = resourceManager.getResourceAsPath("assets/minecraft/textures/$name.png")
         val buffer = BufferUtils.loadFile(path, true)
         TextureLoader.loadTextureFromDirectBuffer(buffer)
     }

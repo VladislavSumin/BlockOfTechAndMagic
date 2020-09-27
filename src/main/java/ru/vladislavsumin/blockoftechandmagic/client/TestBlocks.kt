@@ -102,7 +102,7 @@ class TestBlocks @Inject constructor(
         val attrs = VertexAttributeArray(attr1, attr3)
         vao = VAO(vbo, null, attrs)
 
-        texture = textureManager.loadTexture("testTexture")
+        texture = textureManager.loadTexture("block/dirt")
 
         modelMatrix = Mat4(1f)
 

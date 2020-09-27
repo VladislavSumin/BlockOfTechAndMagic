@@ -2,6 +2,7 @@ package ru.vladislavsumin.blockoftechandmagic.client.shader
 
 import ru.vladislavsumin.opengl.markers.IoThread
 import ru.vladislavsumin.blockoftechandmagic.resource.ResourceManager
+import ru.vladislavsumin.core.utils.BufferUtils
 import ru.vladislavsumin.opengl.shader.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -21,10 +22,8 @@ class ShaderManagerImpl @Inject constructor(
 
     @IoThread
     private fun loadShaderString(name: String, type: ShaderType): String {
-        return resourceManager.getResourceAsStream(getShaderPath(name, type)).reader()
-            .use {
-                it.readText()
-            }
+        val resource = resourceManager.getResourceAsPath(getShaderPath(name, type))
+        return String(BufferUtils.loadFile(resource).array())
     }
 
     private fun getShaderPath(name: String, type: ShaderType): String {

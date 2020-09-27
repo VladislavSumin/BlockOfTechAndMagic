@@ -29,6 +29,8 @@ class Game @Inject constructor(
 
     @MainThread
     fun run() {
+        resourceManager.init()
+
         val props = runBlocking {
             resourceManager.getConfiguration("settings")
         }
@@ -44,6 +46,7 @@ class Game @Inject constructor(
         worldRender.destroy()
         gameWindow.destroy()
         GlfwUtils.terminateGlfw()
+        resourceManager.destroy()
     }
 
     private fun setupOpenGl() {

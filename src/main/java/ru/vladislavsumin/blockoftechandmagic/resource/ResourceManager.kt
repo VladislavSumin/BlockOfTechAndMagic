@@ -5,9 +5,11 @@ import java.nio.file.Path
 import java.util.*
 
 interface ResourceManager {
-    suspend fun getConfiguration(name: String): Properties
+    fun init()
 
-    fun getResourceAsStream(path: String): InputStream
+    fun getConfiguration(name: String): Properties
 
     fun getResourceAsPath(path: String): Path
+
+    fun destroy()
 }
