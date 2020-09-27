@@ -12,6 +12,7 @@ version = "1.0-SNAPSHOT"
 
 application {
     mainClassName = "ru.vladislavsumin.blockoftechandmagic.StarterKt"
+    applicationDefaultJvmArgs = listOf("-XstartOnFirstThread")
 }
 
 distributions {
