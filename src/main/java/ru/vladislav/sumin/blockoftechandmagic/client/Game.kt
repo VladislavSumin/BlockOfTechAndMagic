@@ -49,7 +49,11 @@ class Game @Inject constructor(
     private fun setupOpenGl() {
         GL.createCapabilities()
         println("OpenGL version: ${glGetString(GL_VERSION)}")
+
         glEnable(GL_DEPTH_TEST)
+
+        glEnable(GL_CULL_FACE)
+        glFrontFace(GL_CCW)
 //        glViewport(0, 0, WIDTH, HEIGHT)
     }
 
