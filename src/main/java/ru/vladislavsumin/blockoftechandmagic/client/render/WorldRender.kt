@@ -17,20 +17,20 @@ class WorldRender @Inject constructor(
     private val playerCamera: PlayerCamera,
     private val testBlocks: TestBlocks,
 
-    ) {
+    ) : Render() {
     private lateinit var shader: ShaderProgram
     private val projectionMatrix = glm.perspective(45f, 8 / 6f, 0.1f, 100f)
 
 
     private lateinit var tempF16: FloatBuffer
 
-    fun init() {
+    override fun init() {
         createShaderProgram()
         allocateTempBuffers()
         testBlocks.init()
     }
 
-    fun draw() {
+    override fun draw() {
         shader.useProgram()
         shader.setUniform("view", playerCamera.matrix to tempF16)
         shader.setUniform("projection", projectionMatrix to tempF16)
@@ -38,7 +38,7 @@ class WorldRender @Inject constructor(
         testBlocks.draw(shader)
     }
 
-    fun destroy() {
+    override fun destroy() {
         testBlocks.destroy()
         shader.close()
         freeTempBuffers()
@@ -54,8 +54,8 @@ class WorldRender @Inject constructor(
 
 
     private fun createShaderProgram() {
-        val vertexShader = shaderManager.loadShader("vertexShader2", ShaderType.VERTEX)
-        val fragmentShader = shaderManager.loadShader("variableColorShader", ShaderType.FRAGMENT)
+        val vertexShader = shaderManager.loadShader("vertexShader", ShaderType.VERTEX)
+        val fragmentShader = shaderManager.loadShader("colorShader", ShaderType.FRAGMENT)
 
         shader = shaderManager.createShaderProgram(vertexShader, fragmentShader)
 

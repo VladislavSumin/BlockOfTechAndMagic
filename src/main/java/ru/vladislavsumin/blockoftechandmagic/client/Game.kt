@@ -8,6 +8,7 @@ import org.lwjgl.opengl.GL
 import org.lwjgl.opengl.GL33.*
 import ru.vladislavsumin.blockoftechandmagic.client.event.EventManager
 import ru.vladislavsumin.blockoftechandmagic.client.performance.PerformanceManager
+import ru.vladislavsumin.blockoftechandmagic.client.render.GuiRender
 import ru.vladislavsumin.blockoftechandmagic.client.render.WorldRender
 import ru.vladislavsumin.blockoftechandmagic.client.state.GameStateManager
 import ru.vladislavsumin.blockoftechandmagic.client.window.GameWindow
@@ -27,6 +28,7 @@ class Game @Inject constructor(
     private val gameWindow: GameWindow,
     private val eventManager: EventManager,
     private val worldRender: WorldRender,
+    private val guiRender: GuiRender,
     private val resourceManager: ResourceManager,
     private val gameStateManager: GameStateManager,
     private val performanceManager: PerformanceManager,
@@ -120,6 +122,7 @@ class Game @Inject constructor(
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f)
             glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
             worldRender.draw()
+            guiRender.draw()
 
             performanceManager.commitFrameTime(System.nanoTime() - currentFrameTime)
 
