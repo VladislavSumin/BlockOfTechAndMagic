@@ -13,7 +13,7 @@ import kotlin.math.sin
 
 @Singleton
 class PlayerCamera @Inject constructor(
-    private val userInputManager: UserInputManager
+    private val userInputManager: UserInputManager,
 ) : Camera() {
 
     private var yaw = -90.0
