@@ -3,10 +3,12 @@ package ru.vladislavsumin.blockoftechandmagic.client
 import kotlinx.coroutines.runBlocking
 import org.lwjgl.Version
 import org.lwjgl.glfw.GLFW.*
+import org.lwjgl.glfw.GLFWWindowCloseCallbackI
 import org.lwjgl.opengl.GL
 import org.lwjgl.opengl.GL33.*
 import ru.vladislavsumin.blockoftechandmagic.client.event.EventManager
 import ru.vladislavsumin.blockoftechandmagic.client.render.WorldRender
+import ru.vladislavsumin.blockoftechandmagic.client.state.GameStateManager
 import ru.vladislavsumin.blockoftechandmagic.client.window.GameWindow
 import ru.vladislavsumin.blockoftechandmagic.log.LogTags
 import ru.vladislavsumin.blockoftechandmagic.log.logger
@@ -23,7 +25,8 @@ class Game @Inject constructor(
     private val gameWindow: GameWindow,
     private val eventManager: EventManager,
     private val worldRender: WorldRender,
-    private val resourceManager: ResourceManager
+    private val resourceManager: ResourceManager,
+    private val gameStateManager: GameStateManager,
 ) {
     companion object {
         private const val WIDTH = 800
@@ -31,8 +34,12 @@ class Game @Inject constructor(
         private val log = logger(LogTags.GAME)
     }
 
+    private lateinit var mainThread: Thread
+
     @MainThread
     fun run() {
+        mainThread = Thread.currentThread()
+
         log.info("Start loading game")
         addShowdownHook()
 
@@ -57,8 +64,10 @@ class Game @Inject constructor(
     }
 
     private fun addShowdownHook() {
-        Runtime.getRuntime().addShutdownHook(thread(false) {
+        Runtime.getRuntime().addShutdownHook(thread(start = false, name = "shutdown") {
             log.info("Shutdown hook called")
+            gameStateManager.setCloseSignalReceived()
+            mainThread.join()
         })
     }
 
@@ -79,6 +88,7 @@ class Game @Inject constructor(
         gameWindow.moveWindowToCenterOfScreen()
         gameWindow.setVSync(true)
 
+
 //        glfwSetWindowSizeCallback(window) { window: Long, width: Int, height: Int ->
 //            println("Window changed w=$width, h=$height")
 //            glViewport(0, 0, width*2, height*2)
@@ -92,7 +102,7 @@ class Game @Inject constructor(
         //TODO add window resize callback
 
         var lastFrameTime = glfwGetTime()
-        while (!glfwWindowShouldClose(gameWindow.window)) {
+        while (!gameStateManager.isCloseSignalReceived) {
             val currentFrameTime = glfwGetTime()
             val deltaTime = currentFrameTime - lastFrameTime
             lastFrameTime = currentFrameTime
