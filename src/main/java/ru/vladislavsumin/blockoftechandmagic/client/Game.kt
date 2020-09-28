@@ -7,6 +7,7 @@ import org.lwjgl.glfw.GLFWWindowCloseCallbackI
 import org.lwjgl.opengl.GL
 import org.lwjgl.opengl.GL33.*
 import ru.vladislavsumin.blockoftechandmagic.client.event.EventManager
+import ru.vladislavsumin.blockoftechandmagic.client.performance.PerformanceManager
 import ru.vladislavsumin.blockoftechandmagic.client.render.WorldRender
 import ru.vladislavsumin.blockoftechandmagic.client.state.GameStateManager
 import ru.vladislavsumin.blockoftechandmagic.client.window.GameWindow
@@ -27,6 +28,7 @@ class Game @Inject constructor(
     private val worldRender: WorldRender,
     private val resourceManager: ResourceManager,
     private val gameStateManager: GameStateManager,
+    private val performanceManager: PerformanceManager,
 ) {
     companion object {
         private const val WIDTH = 800
@@ -101,20 +103,23 @@ class Game @Inject constructor(
     private fun loop() {
         //TODO add window resize callback
 
-        var lastFrameTime = glfwGetTime()
+        var lastFrameTime = System.nanoTime()
         while (!gameStateManager.isCloseSignalReceived) {
-            val currentFrameTime = glfwGetTime()
+            val currentFrameTime = System.nanoTime()
             val deltaTime = currentFrameTime - lastFrameTime
+            val deltaTimeF = deltaTime / 1_000_000_000.0
             lastFrameTime = currentFrameTime
 
             // Handle event section
             glfwPollEvents()
-            eventManager.calculateEvents(deltaTime)
+            eventManager.calculateEvents(deltaTimeF)
 
             // Draw section
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f)
             glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
             worldRender.draw()
+
+            performanceManager.commitFrameTime(System.nanoTime() - currentFrameTime)
 
             glfwSwapBuffers(gameWindow.window)
         }
