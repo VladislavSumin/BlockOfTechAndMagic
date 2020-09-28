@@ -16,6 +16,7 @@ import ru.vladislavsumin.blockoftechandmagic.log.logger
 import ru.vladislavsumin.blockoftechandmagic.resource.ResourceManager
 import ru.vladislavsumin.opengl.markers.MainThread
 import ru.vladislavsumin.opengl.utils.GlfwUtils
+import sun.misc.GC
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.concurrent.thread
@@ -41,6 +42,7 @@ class Game @Inject constructor(
     @MainThread
     fun run() {
         mainThread = Thread.currentThread()
+        mainThread.priority = Thread.MAX_PRIORITY
 
         log.info("Start loading game")
         addShowdownHook()
