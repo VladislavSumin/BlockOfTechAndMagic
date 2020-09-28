@@ -60,9 +60,11 @@ class Game @Inject constructor(
         setupGlfwWindow()
         setupOpenGl()
         worldRender.init()
+        guiRender.init()
 
         loop()
 
+        guiRender.destroy()
         worldRender.destroy()
         gameWindow.destroy()
         GlfwUtils.terminateGlfw()
