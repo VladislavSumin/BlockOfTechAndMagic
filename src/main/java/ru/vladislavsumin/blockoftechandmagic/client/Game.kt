@@ -15,6 +15,7 @@ import ru.vladislavsumin.opengl.markers.MainThread
 import ru.vladislavsumin.opengl.utils.GlfwUtils
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.concurrent.thread
 
 
 @Singleton
@@ -33,13 +34,15 @@ class Game @Inject constructor(
     @MainThread
     fun run() {
         log.info("Start loading game")
+        addShowdownHook()
+
         resourceManager.init()
 
         val props = runBlocking {
             resourceManager.getConfiguration("settings")
         }
 
-        println("Hello LWJGL " + Version.getVersion() + "!")
+        log.info("LWJGL version: ${Version.getVersion()}")
         GlfwUtils.initGlfw()
         setupGlfwWindow()
         setupOpenGl()
@@ -53,9 +56,15 @@ class Game @Inject constructor(
         resourceManager.destroy()
     }
 
+    private fun addShowdownHook() {
+        Runtime.getRuntime().addShutdownHook(thread(false) {
+            log.info("Shutdown hook called")
+        })
+    }
+
     private fun setupOpenGl() {
         GL.createCapabilities()
-        println("OpenGL version: ${glGetString(GL_VERSION)}")
+        log.info("OpenGL version: ${glGetString(GL_VERSION)}")
 
         glEnable(GL_DEPTH_TEST)
 

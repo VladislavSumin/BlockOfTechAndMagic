@@ -1,8 +1,13 @@
 package ru.vladislavsumin.blockoftechandmagic.resource
 
+import ru.vladislavsumin.blockoftechandmagic.log.LogTags
+import ru.vladislavsumin.blockoftechandmagic.log.initializeAt
+import ru.vladislavsumin.blockoftechandmagic.log.loadAt
+import ru.vladislavsumin.blockoftechandmagic.log.logger
 import ru.vladislavsumin.blockoftechandmagic.resource.exceptions.ResourceNotFoundException
 import ru.vladislavsumin.core.utils.BufferUtils
-import java.io.*
+import java.io.ByteArrayInputStream
+import java.io.File
 import java.net.URI
 import java.nio.file.*
 import java.util.*
@@ -12,22 +17,33 @@ import kotlin.collections.ArrayList
 
 @Singleton
 class ResourceManagerImpl @Inject constructor() : ResourceManager {
+    companion object {
+        private val log = logger(LogTags.RESOURCES)
+    }
+
     private val resourceSources: MutableList<Path> = ArrayList()
 
     override fun init() {
-        createFileSystemsFromResources()
-        createThisJarFileSystem()
+        log.initializeAt("resource manager") {
+            createFileSystemsFromResources()
+
+            log.loadAt("self filesystem") {
+                createThisJarFileSystem()
+            }
+        }
     }
 
     private fun createFileSystemsFromResources() {
-        //TODO optimize && refactor here
-        File("resources").listFiles()!!.asSequence()
+        File("resources").listFiles()!!
+            .asSequence()
             .filter { it.name.endsWith("zip") }
             .forEach {
-                resourceSources.add(
-                    createFileSystem(URI.create("jar:${it.toURI()}"))
-                        .rootDirectories.iterator().next()
-                )
+                log.loadAt("${it.name} filesystem") {
+                    resourceSources.add(
+                        createFileSystem(URI.create("jar:${it.toURI()}"))
+                            .rootDirectories.iterator().next()
+                    )
+                }
             }
     }
 
