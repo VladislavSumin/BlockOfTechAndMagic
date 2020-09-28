@@ -6,7 +6,7 @@ import ru.vladislavsumin.opengl.markers.MainThread
 
 
 class Texture internal constructor(
-    image: Image
+    decodedImage: DecodedImage
 ) : OpenGlResource(glGenTextures()) {
 
     init {
@@ -17,12 +17,12 @@ class Texture internal constructor(
             GL_TEXTURE_2D,
             0,
             GL_RGB,
-            image.w,
-            image.h,
+            decodedImage.w,
+            decodedImage.h,
             0,
-            image.colorFormat.openGlFormat,
+            decodedImage.colorFormat.openGlFormat,
             GL_UNSIGNED_BYTE,
-            image.buffer
+            decodedImage.buffer
         )
         glGenerateMipmap(GL_TEXTURE_2D)
         glBindTexture(GL_TEXTURE_2D, 0)

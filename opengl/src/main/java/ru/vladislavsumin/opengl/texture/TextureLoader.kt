@@ -9,20 +9,16 @@ import java.nio.ByteBuffer
 
 object TextureLoader {
     fun loadTextureFromDirectBuffer(buffer: ByteBuffer): Texture {
-        val image = decode(buffer)
-        try {
-            return generateTexture(image)
-        } finally {
-            image.buffer.position(0)
-            stbi_image_free(image.buffer)
+        return decode(buffer).use {
+            generateTexture(it)
         }
     }
 
-    private fun generateTexture(image: Image): Texture {
-        return Texture(image)
+    private fun generateTexture(decodedImage: DecodedImage): Texture {
+        return Texture(decodedImage)
     }
 
-    private fun decode(imageBuffer: ByteBuffer): Image {
+    private fun decode(imageBuffer: ByteBuffer): DecodedImage {
         if (!imageBuffer.isDirect) throw IOException("Buffer must be direct")
         stackPush().use { stack ->
             val w = stack.mallocInt(1)
@@ -32,15 +28,7 @@ object TextureLoader {
             if (!stbi_info_from_memory(imageBuffer, w, h, comp)) {
                 throw IOException("Failed to read image information: " + stbi_failure_reason())
             }
-            //else {
-            //    println("OK with reason: " + stbi_failure_reason())
-            //}
             val isHdr = stbi_is_hdr_from_memory(imageBuffer)
-
-            //println("Image width: " + w[0])
-            //println("Image height: " + h[0])
-            //println("Image components: " + comp[0])
-            //println("Image HDR: $isHdr")
 
             val decodedBuffer = stbi_load_from_memory(imageBuffer, w, h, comp, 0)
                 ?: throw RuntimeException("Failed to load image: " + stbi_failure_reason())
@@ -52,7 +40,7 @@ object TextureLoader {
                 else -> throw Exception("panic")
             }
 
-            return Image(
+            return DecodedImage(
                 w[0],
                 h[0],
                 colorFormat,
