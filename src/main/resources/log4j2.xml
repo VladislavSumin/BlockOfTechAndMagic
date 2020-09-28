@@ -9,12 +9,12 @@
 
     <Loggers>
         <!-- Root Logger -->
-        <Root level="INFO" additivity="false">
+        <Root level="ALL" additivity="false">
             <AppenderRef ref="Console"/>
         </Root>
-        <Logger name="ru.control" level="ALL" additivity="false">
-            <AppenderRef ref="Console"/>
-        </Logger>
+<!--        <Logger name="ru.vladislavsumin.blockoftechandmagic.csss" level="ALL" additivity="false">-->
+<!--            <AppenderRef ref="Console"/>-->
+<!--        </Logger>-->
     </Loggers>
 
 </Configuration>

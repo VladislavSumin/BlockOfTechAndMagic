@@ -19,6 +19,7 @@ object Configuration {
 
         const val coroutines = "1.3.9"
         const val dagger = "2.29.1"
+        const val log4j2 = "2.13.3"
 
         //Testing
         const val jUnit4 = "4.12"
@@ -31,6 +32,8 @@ object Configuration {
 
         const val glm = "com.github.kotlin-graphics:glm:${Versions.glm}"
 
+        const val log4j2Api = "org.apache.logging.log4j:log4j-api:${Versions.log4j2}"
+        const val log4j2Core = "org.apache.logging.log4j:log4j-core:${Versions.log4j2}"
 
         object LWJGL {
             const val lwjgl = "org.lwjgl:lwjgl:${Versions.lwjgl}"

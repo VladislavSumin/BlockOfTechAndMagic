@@ -8,6 +8,8 @@ import org.lwjgl.opengl.GL33.*
 import ru.vladislavsumin.blockoftechandmagic.client.event.EventManager
 import ru.vladislavsumin.blockoftechandmagic.client.render.WorldRender
 import ru.vladislavsumin.blockoftechandmagic.client.window.GameWindow
+import ru.vladislavsumin.blockoftechandmagic.log.LogTags
+import ru.vladislavsumin.blockoftechandmagic.log.logger
 import ru.vladislavsumin.blockoftechandmagic.resource.ResourceManager
 import ru.vladislavsumin.opengl.markers.MainThread
 import ru.vladislavsumin.opengl.utils.GlfwUtils
@@ -25,10 +27,12 @@ class Game @Inject constructor(
     companion object {
         private const val WIDTH = 800
         private const val HEIGHT = 600
+        private val log = logger(LogTags.GAME)
     }
 
     @MainThread
     fun run() {
+        log.info("Start loading game")
         resourceManager.init()
 
         val props = runBlocking {

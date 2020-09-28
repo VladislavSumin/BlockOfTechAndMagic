@@ -38,5 +38,8 @@ dependencies {
     with(Configuration.Dependencies) {
         implementation(dagger)
         kapt(daggerCompiler)
+
+        implementation(log4j2Api)
+        implementation(log4j2Core)
     }
 }
