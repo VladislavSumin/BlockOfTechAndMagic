@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL33.*
 class VertexAttribute(
     val size: Int,
     val type: Type,
-    val normalized: Boolean,
+    val normalized: Boolean = false,
 ) {
     enum class Type(
         val glId: Int,
