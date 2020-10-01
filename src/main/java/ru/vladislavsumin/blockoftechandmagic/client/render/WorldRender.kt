@@ -7,6 +7,7 @@ import ru.vladislavsumin.blockoftechandmagic.client.TestBlocks
 import ru.vladislavsumin.blockoftechandmagic.client.camera.PlayerCamera
 import ru.vladislavsumin.blockoftechandmagic.client.shader.ShaderManager
 import ru.vladislavsumin.blockoftechandmagic.client.state.GameStateManager
+import ru.vladislavsumin.opengl.OpenGlSateManager
 import ru.vladislavsumin.opengl.shader.ShaderProgram
 import ru.vladislavsumin.opengl.shader.ShaderType
 import java.nio.FloatBuffer
@@ -19,8 +20,9 @@ class WorldRender @Inject constructor(
     private val playerCamera: PlayerCamera,
     private val testBlocks: TestBlocks,
     private val gameStateManager: GameStateManager,
+    private val openGlSateManager: OpenGlSateManager
 
-    ) : Render() {
+) : Render() {
     private lateinit var shader: ShaderProgram
     private val projectionMatrix = Mat4()
 
@@ -34,6 +36,9 @@ class WorldRender @Inject constructor(
     }
 
     override fun draw() {
+        openGlSateManager.setDepthTest(true)
+        openGlSateManager.setCullFace(true)
+
         shader.useProgram()
 
         glm.perspective(projectionMatrix, 45f, gameStateManager.aspect, 0.1f, 100f)

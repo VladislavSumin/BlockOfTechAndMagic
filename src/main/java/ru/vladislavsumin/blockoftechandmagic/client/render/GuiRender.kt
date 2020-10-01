@@ -2,6 +2,7 @@ package ru.vladislavsumin.blockoftechandmagic.client.render
 
 import ru.vladislavsumin.blockoftechandmagic.client.TestGui
 import ru.vladislavsumin.blockoftechandmagic.client.shader.ShaderManager
+import ru.vladislavsumin.opengl.OpenGlSateManager
 import ru.vladislavsumin.opengl.shader.ShaderProgram
 import ru.vladislavsumin.opengl.shader.ShaderType
 import javax.inject.Inject
@@ -10,7 +11,8 @@ import javax.inject.Singleton
 @Singleton
 class GuiRender @Inject constructor(
     private val shaderManager: ShaderManager,
-    private val testGui: TestGui
+    private val testGui: TestGui,
+    private val openGlSateManager: OpenGlSateManager,
 ) : Render() {
     private lateinit var shader: ShaderProgram
 
@@ -20,6 +22,9 @@ class GuiRender @Inject constructor(
     }
 
     override fun draw() {
+        openGlSateManager.setDepthTest(false)
+        openGlSateManager.setCullFace(false)
+
         shader.useProgram()
         testGui.draw()
     }

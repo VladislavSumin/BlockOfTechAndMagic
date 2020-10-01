@@ -11,6 +11,7 @@ import ru.vladislavsumin.blockoftechandmagic.client.userinput.UserInputCursorCal
 import ru.vladislavsumin.blockoftechandmagic.client.userinput.UserInputKeyCallBack
 import ru.vladislavsumin.blockoftechandmagic.client.userinput.UserInputManager
 import ru.vladislavsumin.blockoftechandmagic.client.userinput.UserInputManagerImpl
+import ru.vladislavsumin.opengl.OpenGlSateManager
 
 @Module
 abstract class ClientModule {
@@ -34,6 +35,12 @@ abstract class ClientModule {
         @JvmStatic
         fun provideUserInputCursorCallBack(userInputManager: UserInputManagerImpl): UserInputCursorCallback {
             return userInputManager.cursorListener
+        }
+
+        @Provides
+        @JvmStatic
+        fun provideGlStateManager(): OpenGlSateManager {
+            return OpenGlSateManager()
         }
     }
 }

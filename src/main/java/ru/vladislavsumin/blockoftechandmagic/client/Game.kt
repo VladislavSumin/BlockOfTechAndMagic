@@ -83,10 +83,10 @@ class Game @Inject constructor(
         GL.createCapabilities()
         log.info("OpenGL version: ${glGetString(GL_VERSION)}")
 
-        glEnable(GL_DEPTH_TEST)
+//        glEnable(GL_DEPTH_TEST)
 
-        glEnable(GL_CULL_FACE)
-        glFrontFace(GL_CCW)
+//        glEnable(GL_CULL_FACE)
+//        glFrontFace(GL_CCW)
 //        glViewport(0, 0, WIDTH, HEIGHT)
     }
 
