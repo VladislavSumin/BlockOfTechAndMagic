@@ -9,7 +9,7 @@ class VertexAttributeArray(
     val stride = attributes.sumBy { it.size * it.type.size }
 
     @MainThread
-    fun setAttributes() {
+    internal fun setAttributes() {
         var offset = 0L
         attributes.forEachIndexed { index, attr ->
             glVertexAttribPointer(index, attr.size, attr.type.glId, attr.normalized, stride, offset)

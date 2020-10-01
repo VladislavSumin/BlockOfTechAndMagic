@@ -6,7 +6,7 @@ import ru.vladislavsumin.opengl.markers.MainThread
 
 abstract class BufferObject : OpenGlResource(glGenBuffers()) {
     abstract val type: Int
-    var size = 0
+    var size = 0 //in bytes
         protected set
 
     fun bind() {

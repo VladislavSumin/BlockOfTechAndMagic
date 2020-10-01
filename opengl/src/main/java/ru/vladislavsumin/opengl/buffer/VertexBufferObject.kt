@@ -7,7 +7,7 @@ class VertexBufferObject : BufferObject() {
         get() = GL_ARRAY_BUFFER
 
     fun setData(data: FloatArray, usage: Usage = Usage.STATIC) {
-        size = data.size
+        size = data.size * 4 //sizeof(float)
         bind()
         glBufferData(GL_ARRAY_BUFFER, data, usage.glId)
     }

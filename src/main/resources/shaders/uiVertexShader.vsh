@@ -1,5 +1,5 @@
 #version 330 core
-layout (location = 0) in vec3 position;
+layout (location = 0) in vec2 position;
 //layout (location = 1) in vec3 color;
 
 //out vec3 ourColor;
@@ -8,6 +8,6 @@ uniform mat4 scale;
 
 void main()
 {
-    gl_Position = scale * vec4(position, 1.0f);
-//    ourColor = color;
+    gl_Position = scale * vec4(position, 0.0f, 1.0f);
+    //    ourColor = color;
 }

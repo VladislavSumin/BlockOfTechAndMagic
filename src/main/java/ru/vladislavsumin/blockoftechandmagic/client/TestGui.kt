@@ -14,11 +14,9 @@ class TestGui @Inject constructor() {
     lateinit var vbo: VBO
 
     fun init() {
-        vbo = VBO().apply {
-
-        }
+        vbo = VBO()
         val vaa = VertexAttributeArray(
-            VertexAttribute(3, VertexAttribute.Type.FLOAT)
+            VertexAttribute(2, VertexAttribute.Type.FLOAT)
         )
         vao = VAO(vbo, null, vaa)
     }
@@ -29,9 +27,9 @@ class TestGui @Inject constructor() {
 //                -0.5f, -0.5f, 0.0f,
 //                0.5f, -0.5f, 0.0f,
 //                0.0f, 0.5f, 0.0f
-                0f, 0f, 0f,
-                800f, 0f, 0f,
-                800f, 600f, 0f
+                0f, 0f,
+                800f, 0f,
+                800f, 600f,
             ),
 
             VertexBufferObject.Usage.STREAM

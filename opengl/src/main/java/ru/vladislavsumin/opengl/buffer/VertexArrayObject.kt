@@ -28,10 +28,11 @@ class VertexArrayObject(
 
     fun draw() {
         glBindVertexArray(id)
-        val count = ebo?.size ?: vbo.size / 3
+        val count = ebo?.size ?: vbo.size / attributes.stride
         if (ebo != null) {
             glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0)
         } else {
+            assert(true)//todo check logic
             glDrawArrays(GL_TRIANGLES, 0, count)
         }
         glBindVertexArray(0)
