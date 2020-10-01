@@ -4,10 +4,10 @@ layout (location = 0) in vec3 position;
 
 //out vec3 ourColor;
 
-//uniform mat4 scale;
+uniform mat4 scale;
 
 void main()
 {
-    gl_Position = vec4(position, 1.0f);
+    gl_Position = scale * vec4(position, 1.0f);
 //    ourColor = color;
 }

@@ -26,10 +26,14 @@ class TestGui @Inject constructor() {
     fun draw() {
         vbo.setData(
             floatArrayOf(
-                -0.5f, -0.5f, 0.0f,
-                0.5f, -0.5f, 0.0f,
-                0.0f, 0.5f, 0.0f
+//                -0.5f, -0.5f, 0.0f,
+//                0.5f, -0.5f, 0.0f,
+//                0.0f, 0.5f, 0.0f
+                0f, 0f, 0f,
+                800f, 0f, 0f,
+                800f, 600f, 0f
             ),
+
             VertexBufferObject.Usage.STREAM
         )
         vao.draw()

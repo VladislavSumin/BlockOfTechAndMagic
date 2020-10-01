@@ -41,6 +41,7 @@ class WorldRender @Inject constructor(
 
         shader.useProgram()
 
+        //TODO no recalculate if not changed
         glm.perspective(projectionMatrix, 45f, gameStateManager.aspect, 0.1f, 100f)
 
         shader.setUniform("view", playerCamera.matrix to tempF16)
