@@ -23,6 +23,7 @@ class GuiRender @Inject constructor(
 ) : Render() {
     private lateinit var shader: ShaderProgram
     private val scale = Mat4()
+    private val universalMat1 = Mat4()
     private lateinit var tmpF16: FloatBuffer
 
     override fun init() {
@@ -38,8 +39,9 @@ class GuiRender @Inject constructor(
         calculateScale()
         shader.useProgram()
         shader.setUniform("scale", scale to tmpF16)
+//        shader.setUniform("universalMat1", universalMat1 to tmpF16)
 //        testGui.draw()
-        performanceDrawer.draw()
+        performanceDrawer.draw(shader)
     }
 
     private fun calculateScale() {

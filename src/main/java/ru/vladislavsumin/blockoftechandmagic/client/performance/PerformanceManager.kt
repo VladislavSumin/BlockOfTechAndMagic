@@ -7,7 +7,7 @@ import javax.inject.Singleton
 @Singleton
 class PerformanceManager @Inject constructor() {
     companion object {
-        const val FRAME_HISTORY_SIZE = 256
+        const val FRAME_HISTORY_SIZE = 128
     }
 
     val frameHistory = LongArray(FRAME_HISTORY_SIZE)
