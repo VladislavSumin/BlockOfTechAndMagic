@@ -7,26 +7,29 @@ import javax.inject.Singleton
 @Singleton
 class PerformanceManager @Inject constructor() {
     companion object {
-        private const val FRAME_HISTORY_SIZE = 256
+        const val FRAME_HISTORY_SIZE = 256
     }
 
-    private val frameHistory = LongArray(FRAME_HISTORY_SIZE)
+    val frameHistory = LongArray(FRAME_HISTORY_SIZE)
     private val gcHistory = BooleanArray(FRAME_HISTORY_SIZE)
-    private var nextFramePosition = 0
+    var currentFramePosition = 0
+        private set
     private var lastGcTime = 0L
 
     /**
      * frame time in nanoseconds
      */
     fun commitFrameTime(frameTime: Long) {
-        frameHistory[nextFramePosition] = frameTime
+        currentFramePosition++
+        currentFramePosition %= FRAME_HISTORY_SIZE
+
+        frameHistory[currentFramePosition] = frameTime
         val currentGcTime = GC.maxObjectInspectionAge()
-        gcHistory[nextFramePosition] = (currentGcTime < lastGcTime)
+        gcHistory[currentFramePosition] = (currentGcTime < lastGcTime)
         lastGcTime = currentGcTime
 
-        nextFramePosition++
-        nextFramePosition %= FRAME_HISTORY_SIZE
-        if (nextFramePosition == 0) printStatsTmpFn()
+
+        if (currentFramePosition == FRAME_HISTORY_SIZE - 1) printStatsTmpFn()
     }
 
     private fun printStatsTmpFn() {

@@ -3,6 +3,7 @@ package ru.vladislavsumin.blockoftechandmagic.client.render
 import glm_.mat4x4.Mat4
 import org.lwjgl.system.MemoryUtil
 import ru.vladislavsumin.blockoftechandmagic.client.TestGui
+import ru.vladislavsumin.blockoftechandmagic.client.performance.PerformanceDrawer
 import ru.vladislavsumin.blockoftechandmagic.client.shader.ShaderManager
 import ru.vladislavsumin.blockoftechandmagic.client.state.GameStateManager
 import ru.vladislavsumin.opengl.OpenGlSateManager
@@ -18,6 +19,7 @@ class GuiRender @Inject constructor(
     private val gameStateManager: GameStateManager,
     private val testGui: TestGui,
     private val openGlSateManager: OpenGlSateManager,
+    private val performanceDrawer: PerformanceDrawer,
 ) : Render() {
     private lateinit var shader: ShaderProgram
     private val scale = Mat4()
@@ -27,6 +29,7 @@ class GuiRender @Inject constructor(
         createShaderProgram()
         tmpF16 = MemoryUtil.memAllocFloat(16)
         testGui.init()
+        performanceDrawer.init()
     }
 
     override fun draw() {
@@ -35,7 +38,8 @@ class GuiRender @Inject constructor(
         calculateScale()
         shader.useProgram()
         shader.setUniform("scale", scale to tmpF16)
-        testGui.draw()
+//        testGui.draw()
+        performanceDrawer.draw()
     }
 
     private fun calculateScale() {
@@ -50,6 +54,7 @@ class GuiRender @Inject constructor(
         shader.close()
         MemoryUtil.memFree(tmpF16)
         testGui.destroy()
+        performanceDrawer.destroy()
     }
 
     private fun createShaderProgram() {
