@@ -2,8 +2,8 @@ package ru.vladislavsumin.blockoftechandmagic.client
 
 import kotlinx.coroutines.runBlocking
 import org.lwjgl.Version
-import org.lwjgl.glfw.GLFW.*
-import org.lwjgl.glfw.GLFWWindowCloseCallbackI
+import org.lwjgl.glfw.GLFW.glfwPollEvents
+import org.lwjgl.glfw.GLFW.glfwSwapBuffers
 import org.lwjgl.opengl.GL
 import org.lwjgl.opengl.GL33.*
 import ru.vladislavsumin.blockoftechandmagic.client.event.EventManager
@@ -17,7 +17,6 @@ import ru.vladislavsumin.blockoftechandmagic.log.logger
 import ru.vladislavsumin.blockoftechandmagic.resource.ResourceManager
 import ru.vladislavsumin.opengl.markers.MainThread
 import ru.vladislavsumin.opengl.utils.GlfwUtils
-import sun.misc.GC
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.concurrent.thread
@@ -83,10 +82,6 @@ class Game @Inject constructor(
         GL.createCapabilities()
         log.info("OpenGL version: ${glGetString(GL_VERSION)}")
 
-//        glEnable(GL_DEPTH_TEST)
-
-//        glEnable(GL_CULL_FACE)
-//        glFrontFace(GL_CCW)
 //        glViewport(0, 0, WIDTH, HEIGHT)
     }
 
@@ -125,6 +120,12 @@ class Game @Inject constructor(
             glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
             worldRender.draw()
             guiRender.draw()
+
+            val glError = glGetError()
+            if (glError != 0) {
+                println("Gl error: 0x%x (%d)".format(glError, glError))
+                break
+            }
 
             performanceManager.commitFrameTime(System.nanoTime() - currentFrameTime)
 

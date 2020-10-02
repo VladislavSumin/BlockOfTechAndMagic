@@ -1,16 +1,16 @@
 package ru.vladislavsumin.opengl.buffer
 
-import ru.vladislavsumin.opengl.EBO
 import org.lwjgl.opengl.GL33.*
+import ru.vladislavsumin.opengl.EBO
 import ru.vladislavsumin.opengl.VBO
 import ru.vladislavsumin.opengl.markers.MainThread
 import java.io.Closeable
-import java.lang.Exception
 
 class VertexArrayObject(
     val vbo: VBO,
     val ebo: EBO? = null,
     val attributes: VertexAttributeArray,
+    val mode: Mode = Mode.TRIANGLES,
     private val isCloseChildResources: Boolean = true
 ) : Closeable {
     val id = glGenVertexArrays()
@@ -28,12 +28,12 @@ class VertexArrayObject(
 
     fun draw() {
         glBindVertexArray(id)
-        val count = ebo?.size ?: vbo.size / attributes.stride
+        val count = ebo?.size ?: (vbo.size / attributes.stride)
         if (ebo != null) {
-            glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0)
+            assert(false)//todo check logic
+            glDrawElements(mode.glId, count, GL_UNSIGNED_INT, 0)
         } else {
-            assert(true)//todo check logic
-            glDrawArrays(GL_TRIANGLES, 0, count)
+            glDrawArrays(mode.glId, 0, count)
         }
         glBindVertexArray(0)
     }
@@ -49,5 +49,18 @@ class VertexArrayObject(
             ebo?.close()
         }
         glDeleteVertexArrays(id)
+    }
+
+    enum class Mode(val glId: Int) {
+        POINTS(GL_POINT),
+        LINES(GL_LINES),
+        LINE_LOOP(GL_LINE_LOOP),
+        LINE_STRIP(GL_LINE_STRIP),
+        TRIANGLES(GL_TRIANGLES),
+        TRIANGLE_STRIP(GL_TRIANGLE_STRIP),
+        TRIANGLE_FAN(GL_TRIANGLE_FAN),
+        QUADS(GL_QUADS),
+        QUAD_STRIP(GL_QUAD_STRIP),
+        POLYGON(GL_POLYGON),
     }
 }
