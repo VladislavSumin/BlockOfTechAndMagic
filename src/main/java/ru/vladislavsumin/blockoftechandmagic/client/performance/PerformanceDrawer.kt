@@ -21,14 +21,14 @@ class PerformanceDrawer @Inject constructor(
 
     companion object {
         private const val ONE_FRAME_BUFFER_SIZE_FLOAT = 2 * 3 * 2
-        private const val ONE_FRAME_BUFFER_SIZE_BYTE = 4 * 2 * 3 * 2
+        private const val ONE_FRAME_BUFFER_SIZE_BYTE = ONE_FRAME_BUFFER_SIZE_FLOAT * 4L
     }
 
     override fun init() {
         frameBuffer = MemoryUtil.memAllocFloat(ONE_FRAME_BUFFER_SIZE_FLOAT)
         vbo = VBO()
         vbo.allocate(
-            ONE_FRAME_BUFFER_SIZE_BYTE * PerformanceManager.FRAME_HISTORY_SIZE.toLong(),
+            ONE_FRAME_BUFFER_SIZE_BYTE * PerformanceManager.FRAME_HISTORY_SIZE,
             VertexBufferObject.Usage.STREAM
         )
         val attr = VertexAttributeArray(
@@ -43,7 +43,6 @@ class PerformanceDrawer @Inject constructor(
             performanceManager.frameHistory[performanceManager.currentFramePosition] / 100_000f
         )
         vao.draw()
-
     }
 
     private fun drawRect(pos: Int, height: Float) {
@@ -57,7 +56,7 @@ class PerformanceDrawer @Inject constructor(
             put(pos.toFloat()); put(height)
         }
         vbo.subData(
-            pos * ONE_FRAME_BUFFER_SIZE_BYTE.toLong(),
+            pos * ONE_FRAME_BUFFER_SIZE_BYTE,
             frameBuffer
         )
     }
