@@ -7,7 +7,6 @@ import ru.vladislavsumin.opengl.VBO
 import ru.vladislavsumin.opengl.buffer.VertexAttribute
 import ru.vladislavsumin.opengl.buffer.VertexAttributeArray
 import ru.vladislavsumin.opengl.buffer.VertexBufferObject
-import java.nio.ByteBuffer
 import java.nio.FloatBuffer
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -16,14 +15,22 @@ import javax.inject.Singleton
 class PerformanceDrawer @Inject constructor(
     private val performanceManager: PerformanceManager
 ) : Drawer() {
-    private lateinit var frameBuffer: FloatBuffer//TODO use only gpu memory
+    private lateinit var frameBuffer: FloatBuffer
     private lateinit var vao: VAO
     private lateinit var vbo: VBO
 
+    companion object {
+        private const val ONE_FRAME_BUFFER_SIZE_FLOAT = 2 * 3 * 2
+        private const val ONE_FRAME_BUFFER_SIZE_BYTE = 4 * 2 * 3 * 2
+    }
+
     override fun init() {
-        // 2 coord * 3 vertex * 2 vertex count * history size
-        frameBuffer = MemoryUtil.memAllocFloat(2 * 3 * 2 * PerformanceManager.FRAME_HISTORY_SIZE)
+        frameBuffer = MemoryUtil.memAllocFloat(ONE_FRAME_BUFFER_SIZE_FLOAT)
         vbo = VBO()
+        vbo.allocate(
+            ONE_FRAME_BUFFER_SIZE_BYTE * PerformanceManager.FRAME_HISTORY_SIZE.toLong(),
+            VertexBufferObject.Usage.STREAM
+        )
         val attr = VertexAttributeArray(
             VertexAttribute(2, VertexAttribute.Type.FLOAT)
         )
@@ -33,24 +40,25 @@ class PerformanceDrawer @Inject constructor(
     override fun draw() {
         drawRect(
             performanceManager.currentFramePosition,
-            performanceManager.frameHistory[performanceManager.currentFramePosition]/100_000f
+            performanceManager.frameHistory[performanceManager.currentFramePosition] / 100_000f
         )
-        vbo.setData(frameBuffer, VertexBufferObject.Usage.STREAM)
         vao.draw()
 
     }
 
     private fun drawRect(pos: Int, height: Float) {
-        frameBuffer.position(pos * 2 * 3 * 2)
-        frameBuffer.put(
-            floatArrayOf(
-                pos * 1f,      0f,
-                pos * 1f + 1f, 0f,
-                pos * 1f + 1f, height,
-                pos * 1f + 1f, 0f,
-                pos * 1f + 1f, height,
-                pos * 1f,      height
-            )
+        frameBuffer.apply {
+            position(0)
+            put(pos.toFloat()); put(0f)
+            put(pos.toFloat() + 1f); put(0f)
+            put(pos.toFloat() + 1f); put(height)
+            put(pos.toFloat() + 1f); put(0f)
+            put(pos.toFloat() + 1f); put(height)
+            put(pos.toFloat()); put(height)
+        }
+        vbo.subData(
+            pos * ONE_FRAME_BUFFER_SIZE_BYTE.toLong(),
+            frameBuffer
         )
     }
 
